@@ -14,6 +14,7 @@ function generateTemplate1(doc, cv_data) {
     // Установка размера шрифта
     doc.fontSize(30); // Размер шрифта для имени
     doc.text(name, xPosition, yPosition); // Полное имя на фоне заголовка
+    doc.moveDown(2); // Добавляем отступ после имени
 
     // Левый столбец
     doc.moveTo(0, 0)
@@ -31,6 +32,7 @@ function generateTemplate1(doc, cv_data) {
     // Заголовок блока "Contact"
     doc.fillColor('#fff'); // Цвет текста
     doc.fontSize(24).text('Contact', contactX, contactY); // Заголовок (размер шрифта 24)
+    doc.moveDown(1); // Добавляем отступ после заголовка
 
     // Промежуток между заголовком и контактной информацией
     const spacing = 20; // Промежуток
@@ -38,9 +40,12 @@ function generateTemplate1(doc, cv_data) {
 
     // Контактная информация
     doc.fontSize(12); // Размер шрифта для контактной информации
-    doc.text(cv_data.personal.email, contactX, emailY); // Email
-    doc.text(cv_data.personal.phone, contactX, emailY + spacing); // Телефон
-    doc.text(cv_data.personal.location, contactX, emailY + spacing * 2); // Местоположение
+    doc.text(`Email: ${cv_data.personal.email}`, contactX, emailY); // Email
+    doc.moveDown(1); // Добавляем отступ после Email
+    doc.text(`Phone: ${cv_data.personal.phone}`, contactX, emailY + spacing); // Телефон
+    doc.moveDown(1); // Добавляем отступ после Телефона
+    doc.text(`Location: ${cv_data.personal.location}`, contactX, emailY + spacing * 2); // Местоположение
+    doc.moveDown(2); // Добавляем отступ перед блоком навыков
 
     // Блок с навыками
     const skillsX = 40; // Позиция по оси X для навыков (сдвинуто на 30 пикселей)
@@ -49,6 +54,7 @@ function generateTemplate1(doc, cv_data) {
     // Заголовок блока "Skills"
     doc.fillColor('#fff'); // Цвет текста
     doc.fontSize(24).text('Skills', skillsX, skillsY); // Заголовок (размер шрифта 24)
+    doc.moveDown(1); // Добавляем отступ после заголовка
 
     // Навыки
     doc.fontSize(12); // Размер шрифта для информации о навыках
@@ -58,14 +64,16 @@ function generateTemplate1(doc, cv_data) {
         doc.text(skill, skillsX, skillY);
         lastSkillY = skillY; // Обновляем позицию последнего элемента
     });
+    doc.moveDown(2); // Добавляем отступ перед блоком образования
 
     // Блок с образованием
     const educationX = 250; // Позиция по оси X для образования (сдвинуто на 30 пикселей)
-    const educationY = 150; // Позиция по оси Y (на том ж�� уровне, что и контакты)
+    const educationY = 150; // Позиция по оси Y (на том же уровне, что и контакты)
 
     // Заголовок блока "Education"
     doc.fillColor('#070c17'); // Цвет текста
     doc.fontSize(24).text('Education', educationX, educationY); // Заголовок (размер шрифта 24)
+    doc.moveDown(1); // Добавляем отступ после заголовка
 
     // Образование
     doc.fontSize(12); // Размер шрифта для информации об образовании
@@ -73,6 +81,7 @@ function generateTemplate1(doc, cv_data) {
         const eduY = educationY + 40 + index * 20; // Позиция для каждого элемента образования
         doc.text(`${edu.degree} in ${edu.field}, ${edu.institution} (${edu.graduation_year})`, educationX, eduY);
     });
+    doc.moveDown(2); // Добавляем отступ перед блоком опыта работы
 
     // Блок с опытом работы
     const experienceX = 250; // Позиция по оси X для опыта работы (сдвинуто на 30 пикселей)
@@ -81,6 +90,7 @@ function generateTemplate1(doc, cv_data) {
     // Заголовок блока "Experience"
     doc.fillColor('#070c17'); // Цвет текста
     doc.fontSize(24).text('Experience', experienceX, experienceY); // Заголовок (размер шрифта 24)
+    doc.moveDown(1); // Добавляем отступ после заголовка
 
     // Опыт работы
     doc.fontSize(12); // Размер шрифта для информации об опыте работы
@@ -88,7 +98,9 @@ function generateTemplate1(doc, cv_data) {
         const expY = experienceY + 40 + index * 20; // Позиция для каждого элемента опыта работы
         doc.text(`${exp.position} at ${exp.company} (${exp.start_date} - ${exp.end_date})`, experienceX, expY);
         doc.text(`${exp.description}`, experienceX, expY + 15); // Описание
+        doc.moveDown(1); // Добавляем отступ после каждого опыта работы
     });
+    doc.moveDown(2); // Добавляем отступ перед блоком языков
 
     // Блок с языками
     const languagesX = 40; // Позиция по оси X для языков (сдвинуто на 30 пикселей)
@@ -97,6 +109,7 @@ function generateTemplate1(doc, cv_data) {
     // Заголовок блока "Languages"
     doc.fillColor('#fff'); // Цвет текста
     doc.fontSize(24).text('Languages', languagesX, languagesY); // Заголовок (размер шрифта 24)
+    doc.moveDown(1); // Добавляем отступ после заголовка
 
     // Языки
     doc.fontSize(12); // Размер шрифта для информации о языках
