@@ -1,6 +1,7 @@
 const express = require('express'); // Импортируем библиотеку Express для создания сервера
 const bodyParser = require('body-parser'); // Импортируем middleware для парсинга тела запроса
 const dotenv = require('dotenv'); // Импортируем библиотеку для работы с переменными окружения
+const cors = require('cors'); // Импортируем библиотеку CORS
 const PDFDocument = require('pdfkit'); // Импортируем библиотеку для генерации PDF
 const generateTemplate1 = require('./templates/template1'); // Импортируем первый шаблон
 const generateTemplate2 = require('./templates/template2'); // Импортируем второй шаблон
@@ -13,6 +14,7 @@ const app = express(); // Создаем экземпляр приложения
 const PORT = process.env.PORT || 3000; // Устанавливаем порт для сервера
 const API_KEY = process.env.API_KEY; // Получаем API ключ из переменных окружения
 
+app.use(cors()); // Включаем CORS
 app.use(bodyParser.json({ limit: '1mb' })); // Устанавливаем максимальный размер входных данных в 1MB
 
 // Обработка POST-запроса для генерации резюме
@@ -31,7 +33,7 @@ app.post('/api/v1/generate', (req, res) => {
     }
 
     const doc = new PDFDocument(); // Создаем новый документ PDF
-    let filename = `resume_${cv_data.personal.full_name.replace(/\s+/g, '_')}.pdf`; // Формируем имя файла на основе полного имени
+    let filename = `resume_${cv_data.personal.full_name.replace(/\s+/g, '_')}.pdf`; // Формируем имя ��айла на основе полного имени
     filename = filename.replace(/[^a-zA-Z0-9_\.]/g, ''); // Удаляем недопустимые символы из имени файла
 
     // Устанавливаем заголовки для ответа
