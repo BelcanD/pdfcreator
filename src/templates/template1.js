@@ -34,22 +34,19 @@ function generateTemplate1(doc, cv_data) {
     doc.fontSize(24).text('Contact', contactX, contactY); // Заголовок (размер шрифта 24)
     doc.moveDown(1); // Добавляем отступ после заголовка
 
-    // Промежуток между заголовком и контактной информацией
-    const spacing = 20; // Промежуток
-    const emailY = contactY + 40; // Позиция для Email
-
     // Контактная информация
     doc.fontSize(12); // Размер шрифта для контактной информации
-    doc.text(`Email: ${cv_data.personal.email}`, contactX, emailY); // Email
+    const spacing = 10; // Устанавливаем промежуток между контактами
+    doc.text(`Email: ${cv_data.personal.email}`, contactX, contactY + 40); // Email
     doc.moveDown(1); // Добавляем отступ после Email
-    doc.text(`Phone: ${cv_data.personal.phone}`, contactX, emailY + spacing); // Телефон
+    doc.text(`Phone: ${cv_data.personal.phone}`, contactX, contactY + 40 + spacing); // Телефон
     doc.moveDown(1); // Добавляем отступ после Телефона
-    doc.text(`Location: ${cv_data.personal.location}`, contactX, emailY + spacing * 2); // Местоположение
+    doc.text(`Location: ${cv_data.personal.location}`, contactX, contactY + 40 + spacing * 2); // Местоположение
     doc.moveDown(2); // Добавляем отступ перед блоком навыков
 
     // Блок с навыками
     const skillsX = 40; // Позиция по оси X для навыков (сдвинуто на 30 пикселей)
-    const skillsY = emailY + 100; // Позиция по оси Y (отступ от контактов)
+    const skillsY = contactY + 100; // Позиция по оси Y (отступ от контактов)
 
     // Заголовок блока "Skills"
     doc.fillColor('#fff'); // Цвет текста
@@ -59,8 +56,9 @@ function generateTemplate1(doc, cv_data) {
     // Навыки
     doc.fontSize(12); // Размер шрифта для информации о навыках
     let lastSkillY; // Переменная для хранения позиции последнего элемента навыков
+    const skillSpacing = 10; // Устанавливаем промежуток между навыками
     cv_data.skills.forEach((skill, index) => {
-        const skillY = skillsY + 40 + index * 20; // Позиция для каждого элемента навыков
+        const skillY = skillsY + 40 + index * (20 + skillSpacing); // Позиция для каждого элемента навыков
         doc.text(skill, skillsX, skillY);
         lastSkillY = skillY; // Обновляем позицию последнего элемента
     });
@@ -77,8 +75,9 @@ function generateTemplate1(doc, cv_data) {
 
     // Образование
     doc.fontSize(12); // Размер шрифта для информации об образовании
+    const educationSpacing = 10; // Устанавливаем промежуток между образованиями
     cv_data.education.forEach((edu, index) => {
-        const eduY = educationY + 40 + index * 20; // Позиция для каждого элемента образования
+        const eduY = educationY + 40 + index * (20 + educationSpacing); // Позиция для каждого элемента образования
         doc.text(`${edu.degree} in ${edu.field}, ${edu.institution} (${edu.graduation_year})`, educationX, eduY);
     });
     doc.moveDown(2); // Добавляем отступ перед блоком опыта работы
@@ -94,8 +93,9 @@ function generateTemplate1(doc, cv_data) {
 
     // Опыт работы
     doc.fontSize(12); // Размер шрифта для информации об опыте работы
+    const experienceSpacing = 10; // Устанавливаем промежуток между опытом
     cv_data.experience.forEach((exp, index) => {
-        const expY = experienceY + 40 + index * 20; // Позиция для каждого элемента опыта работы
+        const expY = experienceY + 40 + index * (20 + experienceSpacing); // Позиция для каждого элемента опыта работы
         doc.text(`${exp.position} at ${exp.company} (${exp.start_date} - ${exp.end_date})`, experienceX, expY);
         doc.text(`${exp.description}`, experienceX, expY + 15); // Описание
         doc.moveDown(1); // Добавляем отступ после каждого опыта работы
@@ -113,8 +113,9 @@ function generateTemplate1(doc, cv_data) {
 
     // Языки
     doc.fontSize(12); // Размер шрифта для информации о языках
+    const languageSpacing = 10; // Устанавливаем промежуток между языками
     cv_data.languages.forEach((lang, index) => {
-        const langY = languagesY + 40 + index * 20; // Позиция для каждого элемента языков
+        const langY = languagesY + 40 + index * (20 + languageSpacing); // Позиция для каждого элемента языков
         doc.text(`${lang.name} - ${lang.level}`, languagesX, langY);
     });
 }
