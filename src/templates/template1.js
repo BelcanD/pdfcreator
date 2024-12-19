@@ -36,7 +36,7 @@ function generateTemplate1(doc, cv_data) {
 
     // Контактная информация
     doc.fontSize(12); // Размер шрифта для контактной информации
-    const spacing = 10; // Устанавливаем промежуток между контактами
+    const spacing = 20; // Устанавливаем промежуток между контактами
     doc.text(` ${cv_data.personal.email}`, contactX, contactY + 40); // Email
     doc.moveDown(1); // Добавляем отступ после Email
     doc.text(` ${cv_data.personal.phone}`, contactX, contactY + 40 + spacing); // Телефон
