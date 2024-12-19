@@ -37,11 +37,11 @@ function generateTemplate1(doc, cv_data) {
     // Контактная информация
     doc.fontSize(12); // Размер шрифта для контактной информации
     const spacing = 10; // Устанавливаем промежуток между контактами
-    doc.text(`Email: ${cv_data.personal.email}`, contactX, contactY + 40); // Email
+    doc.text(` ${cv_data.personal.email}`, contactX, contactY + 40); // Email
     doc.moveDown(1); // Добавляем отступ после Email
-    doc.text(`Phone: ${cv_data.personal.phone}`, contactX, contactY + 40 + spacing); // Телефон
+    doc.text(` ${cv_data.personal.phone}`, contactX, contactY + 40 + spacing); // Телефон
     doc.moveDown(1); // Добавляем отступ после Телефона
-    doc.text(`Location: ${cv_data.personal.location}`, contactX, contactY + 40 + spacing * 2); // Местоположение
+    doc.text(` ${cv_data.personal.location}`, contactX, contactY + 40 + spacing * 2); // Местоположение
     doc.moveDown(2); // Добавляем отступ перед блоком навыков
 
     // Блок с навыками
