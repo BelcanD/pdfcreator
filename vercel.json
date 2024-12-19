@@ -13,7 +13,5 @@
       }
     ],
     "env": {
-      "API_KEY": "@api_key",
-      "PORT": "3000"
     }
   }
