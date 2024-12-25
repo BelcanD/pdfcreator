@@ -16,14 +16,6 @@ function generateTemplate2(doc, cv_data) {
        .fontSize(16)
        .text(cv_data.personal.title, 280, 80);
 
-    // Description
-    doc.fillColor('#FFFFFF')
-       .fontSize(12)
-       .text(cv_data.personal.description, 280, 120, {
-           width: 500,
-           align: 'left'
-       });
-
     // Contact Information (Left side)
     const contactX = 20;
     const contactY = 120;
@@ -45,11 +37,11 @@ function generateTemplate2(doc, cv_data) {
            width: 160
        });
 
-    // Right side content
+    // Right side content starts right after the green header
     let rightX = 280;
-    let rightY = 180;
+    let rightY = 120;
 
-    // Skills Section (moved to right)
+    // Skills Section
     doc.fillColor('#333333')
        .fontSize(20)
        .text('SKILLS', rightX, rightY);
@@ -67,7 +59,7 @@ function generateTemplate2(doc, cv_data) {
         rightY += 25;
     });
 
-    // Languages Section (moved to right)
+    // Languages Section
     rightY += 20;
     doc.fillColor('#333333')
        .fontSize(20)
