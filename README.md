@@ -211,7 +211,7 @@ case X:
 
 1. Создайте тестовый запрос:
 ```bash
-curl -X POST http://localhost:3000/api/v1/generate \
+curl -X POST http://localhost:3000/api/v1/generate\
   -H "Authorization: Bearer ваш_api_ключ" \
   -H "Content-Type: application/json" \
   -d '{"template_id": X, "cv_data": {...}}' \
