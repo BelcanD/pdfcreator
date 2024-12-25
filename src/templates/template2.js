@@ -78,9 +78,8 @@ function generateTemplate2(doc, cv_data) {
     // Right side content starts right after the green header
     let rightX = 240;
     let rightY = 120;
-    const dateX = 400; // Moved dates closer
-    const titleWidth = 150; // Width for titles
-    const dateMargin = 10; // Margin between title and date
+    const titleWidth = 300; // Increased width for titles
+    const dateX = 600; // Fixed position for dates
 
     // Education Section
     doc.fillColor('#333333')
@@ -94,18 +93,15 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.education.forEach(edu => {
-        const degreeText = `${edu.degree} in ${edu.field}`;
-        
-        // Degree title and year on the same line
+        // Degree title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(degreeText, rightX, rightY, {
-               width: titleWidth // Fixed width for title
-           });
-        
+           .text(`${edu.degree} in ${edu.field}`, rightX, rightY);
+
+        // Year on the right
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(edu.graduation_year, rightX + titleWidth + dateMargin, rightY);
+           .text(edu.graduation_year, dateX, rightY);
 
         // Institution on next line
         doc.fillColor('#333333')
@@ -128,16 +124,15 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.experience.forEach(exp => {
-        // Position title and date on the same line
+        // Position title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(exp.position, rightX, rightY, {
-               width: titleWidth // Fixed width for title
-           });
+           .text(exp.position, rightX, rightY);
 
+        // Date on the right
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(exp.start_date, rightX + titleWidth + dateMargin, rightY);
+           .text(exp.start_date, dateX, rightY);
 
         // Company name
         doc.fillColor('#333333')
