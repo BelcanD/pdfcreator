@@ -1,8 +1,8 @@
 const PDFDocument = require('pdfkit');
 
 function generateTemplate2(doc, cv_data) {
-    // Left section (contact info and photo area) - made thinner
-    doc.fillColor('#F2E8E4').rect(0, 0, 200, 842).fill();
+    // Left section (contact info only) - beige panel ends after address
+    doc.fillColor('#F2E8E4').rect(0, 0, 200, 250).fill();
 
     // Right section - made wider
     doc.fillColor('#4A5D5A').rect(200, 0, 615, 100).fill();
@@ -45,47 +45,49 @@ function generateTemplate2(doc, cv_data) {
            width: 160
        });
 
-    // Skills Section
-    doc.fillColor('#333333')
-       .fontSize(20)
-       .text('SKILLS', contactX, contactY + 120);
-
-    // Separator line under SKILLS
-    doc.moveTo(contactX, contactY + 150)
-       .lineTo(180, contactY + 150)
-       .stroke('#333333');
-
-    let currentY = contactY + 170;
-    cv_data.skills.forEach(skill => {
-        doc.fillColor('#333333')
-           .fontSize(12)
-           .text('*  ' + skill, contactX, currentY);
-        currentY += 25;
-    });
-
-    // Languages Section
-    doc.fillColor('#333333')
-       .fontSize(20)
-       .text('LANGUAGES', contactX, currentY + 20);
-
-    // Separator line under LANGUAGES
-    doc.moveTo(contactX, currentY + 50)
-       .lineTo(180, currentY + 50)
-       .stroke('#333333');
-
-    currentY += 70;
-    cv_data.languages.forEach(lang => {
-        doc.fillColor('#333333')
-           .fontSize(12)
-           .text(`*  ${lang.name} - ${lang.level}`, contactX, currentY);
-        currentY += 25;
-    });
-
     // Right side content
     let rightX = 280;
     let rightY = 180;
 
+    // Skills Section (moved to right)
+    doc.fillColor('#333333')
+       .fontSize(20)
+       .text('SKILLS', rightX, rightY);
+
+    // Separator line under SKILLS
+    doc.moveTo(rightX, rightY + 30)
+       .lineTo(780, rightY + 30)
+       .stroke('#333333');
+
+    rightY += 50;
+    cv_data.skills.forEach(skill => {
+        doc.fillColor('#333333')
+           .fontSize(12)
+           .text('*  ' + skill, rightX, rightY);
+        rightY += 25;
+    });
+
+    // Languages Section (moved to right)
+    rightY += 20;
+    doc.fillColor('#333333')
+       .fontSize(20)
+       .text('LANGUAGES', rightX, rightY);
+
+    // Separator line under LANGUAGES
+    doc.moveTo(rightX, rightY + 30)
+       .lineTo(780, rightY + 30)
+       .stroke('#333333');
+
+    rightY += 50;
+    cv_data.languages.forEach(lang => {
+        doc.fillColor('#333333')
+           .fontSize(12)
+           .text(`*  ${lang.name} - ${lang.level}`, rightX, rightY);
+        rightY += 25;
+    });
+
     // Education Section
+    rightY += 20;
     doc.fillColor('#333333')
        .fontSize(20)
        .text('EDUCATION', rightX, rightY);
