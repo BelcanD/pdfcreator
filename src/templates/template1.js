@@ -150,12 +150,9 @@ function generateTemplate1(doc, cv_data) {
     // Опыт работы
     cv_data.experience.forEach(exp => {
         // Position with line breaks
-        const positionLines = formatLongText(exp.position, maxLineWidth);
-        
         doc.fillColor('#070c17').fontSize(12);
-        positionLines.forEach((line, i) => {
-            doc.text(line, rightX, rightY + i * lineHeight);
-        });
+        doc.text(exp.position, rightX, rightY);
+        doc.moveDown(0.5);
 
         // Date range on the right
         doc.fillColor('#070c17')
@@ -165,29 +162,22 @@ function generateTemplate1(doc, cv_data) {
             doc.text(exp.end_date, rightX + 250, rightY + 20);
         }
 
-        // Company (with fixed spacing from the last line of position)
-        const dateLines = exp.end_date ? 2 : 1;
-        const companyY = rightY + Math.max(positionLines.length, dateLines) * lineHeight + 5;
-        const companyLines = formatLongText(exp.company, maxLineWidth);
-        
+        // Company
         doc.fillColor('#070c17').fontSize(12);
-        companyLines.forEach((line, i) => {
-            doc.text(line, rightX, companyY + i * lineHeight);
-        });
+        doc.text(exp.company, rightX, rightY + 30);
+        doc.moveDown(0.5);
 
-        // Description (with fixed spacing from the last line of company)
+        // Description
         if (exp.description) {
-            const descriptionY = companyY + (companyLines.length * lineHeight) + 5;
-            const descriptionLines = formatLongText(exp.description, maxLineWidth);
-            
             doc.fillColor('#070c17').fontSize(12);
-            descriptionLines.forEach((line, i) => {
-                doc.text(line, rightX, descriptionY + i * lineHeight);
+            doc.text(exp.description, rightX, rightY + 50, {
+                width: 300,
+                align: 'left'
             });
-
-            rightY = descriptionY + (descriptionLines.length * lineHeight) + 15;
+            doc.moveDown();
+            rightY = doc.y + 15;
         } else {
-            rightY = companyY + (companyLines.length * lineHeight) + 15;
+            rightY = doc.y + 15;
         }
     });
 }

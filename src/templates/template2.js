@@ -152,7 +152,12 @@ function generateTemplate2(doc, cv_data) {
     rightY += 40;
     cv_data.experience.forEach(exp => {
         // Position title
-        const positionHeight = renderFormattedText(exp.position, rightX, rightY, 16);
+        doc.fillColor('#333333').fontSize(16);
+        doc.text(exp.position, rightX, rightY, {
+            width: 250,
+            align: 'left'
+        });
+        doc.moveDown(0.5);
 
         // Date range on the right
         doc.fillColor('#333333')
@@ -162,18 +167,22 @@ function generateTemplate2(doc, cv_data) {
             doc.text(exp.end_date, dateX, rightY + 20);
         }
 
-        // Company name with proper spacing
-        const dateLines = exp.end_date ? 2 : 1;
-        const companyY = rightY + Math.max(positionHeight, dateLines * lineHeight) + 5;
-        const companyHeight = renderFormattedText(exp.company, rightX, companyY, 14);
+        // Company name
+        doc.fillColor('#333333').fontSize(14);
+        doc.text(exp.company, rightX, rightY + 30);
+        doc.moveDown(0.5);
 
-        // Description (with fixed spacing from the last line of company)
+        // Description
         if (exp.description) {
-            const descriptionY = companyY + companyHeight + 5;
-            const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12);
-            rightY = descriptionY + descriptionHeight + 15;
+            doc.fillColor('#333333').fontSize(12);
+            doc.text(exp.description, rightX, rightY + 50, {
+                width: 250,
+                align: 'left'
+            });
+            doc.moveDown();
+            rightY = doc.y + 15;
         } else {
-            rightY = companyY + companyHeight + 15;
+            rightY = doc.y + 15;
         }
     });
 }
