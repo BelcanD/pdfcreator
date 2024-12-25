@@ -159,20 +159,21 @@ function generateTemplate2(doc, cv_data) {
            .fontSize(14);
         doc.text(exp.start_date, dateX, rightY);
         if (exp.end_date) {
-            doc.text(exp.end_date, dateX, rightY + lineHeight);
+            doc.text(exp.end_date, dateX, rightY + 20);
         }
 
         // Company name with proper spacing
-        const companyY = rightY + positionHeight + 5;
+        const dateLines = exp.end_date ? 2 : 1;
+        const companyY = rightY + Math.max(positionHeight, dateLines * lineHeight) + 5;
         const companyHeight = renderFormattedText(exp.company, rightX, companyY, 14);
 
         // Description (with fixed spacing from the last line of company)
         if (exp.description) {
             const descriptionY = companyY + companyHeight + 5;
             const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12);
-            rightY = descriptionY + descriptionHeight + 5;
+            rightY = descriptionY + descriptionHeight + 15;
         } else {
-            rightY = companyY + companyHeight + 5;
+            rightY = companyY + companyHeight + 15;
         }
     });
 }
