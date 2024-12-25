@@ -18,25 +18,38 @@ function generateTemplate3(doc, cv_data) {
     // Contact Information
     const contactY = margin + 60;
     const contactHeight = 25;
-    const contactWidth = 250;
-    const contactX = (pageWidth - contactWidth) / 2;
+    const contactWidth = pageWidth - (margin * 2); // Width from margin to margin
+    const contactX = margin;
 
-    // Phone tile (with beige background)
-    doc.rect(contactX - 10, contactY - 5, contactWidth + 20, contactHeight)
+    // Phone tile
+    doc.rect(contactX, contactY - 5, contactWidth, contactHeight)
        .fill(beigeColor);
     doc.fontSize(12)
        .fillColor('#333')
-       .text(cv_data.personal.phone, contactX, contactY, { align: 'center' });
+       .text(cv_data.personal.phone, contactX, contactY, { 
+           width: contactWidth,
+           align: 'center'
+       });
 
-    // Location (without background)
+    // Location tile
+    doc.rect(contactX, contactY + 25 - 5, contactWidth, contactHeight)
+       .fill(beigeColor);
     doc.fontSize(12)
        .fillColor('#333')
-       .text(cv_data.personal.location, contactX, contactY + 25, { align: 'center' });
+       .text(cv_data.personal.location, contactX, contactY + 25, {
+           width: contactWidth,
+           align: 'center'
+       });
 
-    // Email (without background)
+    // Email tile
+    doc.rect(contactX, contactY + 50 - 5, contactWidth, contactHeight)
+       .fill(beigeColor);
     doc.fontSize(12)
        .fillColor('#333')
-       .text(cv_data.personal.email, contactX, contactY + 50, { align: 'center' });
+       .text(cv_data.personal.email, contactX, contactY + 50, {
+           width: contactWidth,
+           align: 'center'
+       });
 
     const contentStartY = contactY + 100;
     const leftX = margin;
