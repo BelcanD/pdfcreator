@@ -164,13 +164,19 @@ function generateTemplate2(doc, cv_data) {
         const companyY = rightY + positionHeight + lineHeight;
         const companyHeight = renderFormattedText(exp.company, rightX, companyY, 14);
 
-        // Description with proper spacing
+        // Description (with fixed spacing from the last line of company)
         if (exp.description) {
-            const descriptionY = companyY + companyHeight + lineHeight;
-            const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12);
-            rightY = descriptionY + descriptionHeight + lineHeight;
+            const descriptionY = companyY + (companyLines.length * lineHeight) + 5;
+            const descriptionLines = formatLongText(exp.description, maxLineWidth);
+            
+            doc.fillColor('#070c17').fontSize(12);
+            descriptionLines.forEach((line, i) => {
+                doc.text(line, rightX, descriptionY + i * lineHeight);
+            });
+
+            rightY = descriptionY + (descriptionLines.length * lineHeight) + 20;
         } else {
-            rightY = companyY + companyHeight + lineHeight;
+            rightY = companyY + (companyLines.length * lineHeight) + 20;
         }
     });
 }
