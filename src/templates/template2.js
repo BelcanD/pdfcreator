@@ -1,109 +1,131 @@
 const PDFDocument = require('pdfkit');
 
-function generateTemplate1(doc, cv_data) {
-  
+function generateTemplate4(doc, cv_data) {
+    // Background color for the right section
+    doc.fillColor('#4A5D5A').rect(400, 0, 415, 200).fill();
 
-    // Заголовок
-    doc.fillColor('#070c17').rect(200, 30, 615, 100).fill(); // Фон заголовка
-    doc.moveDown(1);
+    // Left section (contact info and photo area)
+    doc.fillColor('#F2E8E4').rect(0, 0, 400, 842).fill();
 
-    // Личная информация
-    doc.fillColor('#fff'); // Цвет текста
-    const name = cv_data.personal.full_name;
-    const yPosition = 80; // Вертикальная позиция (сдвинуто на 30 пикселей вниз)
-    const xPosition = 280; // Фиксированная горизонтальная позиция (сдвинуто на 30 пикселей вправо)
+    // Name and title
+    doc.fillColor('#FFFFFF')
+       .fontSize(32)
+       .text(cv_data.personal.full_name, 420, 40);
+    
+    doc.fillColor('#FFFFFF')
+       .fontSize(16)
+       .text(cv_data.personal.title, 420, 80);
 
-    // Установка размера шрифта
-    doc.fontSize(30); // Размер шрифта для имени
-    doc.text(name, xPosition, yPosition); // Полное имя на фоне заголовка
+    // Description
+    doc.fillColor('#FFFFFF')
+       .fontSize(12)
+       .text(cv_data.personal.description, 420, 120, {
+           width: 380,
+           align: 'left'
+       });
 
-    // Левый столбец
-    doc.moveTo(0, 0)
-        .lineTo(0, 720)
-        .bezierCurveTo(50, 680, 100, 700, 200, 760) // Плавная кривая
-        .lineTo(200, 760)
-        .lineTo(200, 0)
-        .closePath()
-        .fill('#070c17'); // Заполнение цветом
+    // Contact Information (Left side)
+    const contactX = 40;
+    const contactY = 220;
 
-    // Блок с контактной информацией
-    const contactX = 40; // Позиция по оси X (сдвинуто на 30 пикселей)
-    const contactY = 150; // Позиция по оси Y
+    // Phone
+    doc.fillColor('#333333')
+       .fontSize(12)
+       .text(cv_data.personal.phone, contactX, contactY);
 
-    // Заголовок блока "Contact"
-    doc.fillColor('#fff'); // Цвет текста
-    doc.fontSize(24).text('Contact', contactX, contactY); // Заголовок (размер шрифта 24)
+    // Email
+    doc.fillColor('#333333')
+       .fontSize(12)
+       .text(cv_data.personal.email, contactX, contactY + 30);
 
-    // Промежуток между заголовком и контактной информацией
-    const spacing = 20; // Промежуток
-    const emailY = contactY + 40; // Позиция для Email
+    // Address
+    doc.fillColor('#333333')
+       .fontSize(12)
+       .text(cv_data.personal.location, contactX, contactY + 60, {
+           width: 300
+       });
 
-    // Контактная информация
-    doc.fontSize(12); // Размер шрифта для контактной информации
-    doc.text(`Email: ${cv_data.personal.email}`, contactX, emailY); // Email
-    doc.text(`Phone: ${cv_data.personal.phone}`, contactX, emailY + spacing); // Телефон
-    doc.text(`Location: ${cv_data.personal.location}`, contactX, emailY + spacing * 2); // Местоположение
+    // Skills Section
+    doc.fillColor('#333333')
+       .fontSize(20)
+       .text('SKILLS', contactX, contactY + 120);
 
-    // Блок с навыками
-    const skillsX = 40; // Позиция по оси X для навыков (сдвинуто на 30 пикселей)
-    const skillsY = emailY + 100; // Позиция по оси Y (отступ от ��онтактов)
-
-    // Заголовок блока "Skills"
-    doc.fillColor('#fff'); // Цвет текста
-    doc.fontSize(24).text('Skills', skillsX, skillsY); // Заголовок (размер шрифта 24)
-
-    // Навыки
-    doc.fontSize(12); // Размер шрифта для информации о навыках
-    cv_data.skills.forEach((skill, index) => {
-        const skillY = skillsY + 40 + index * 20; // Позиция для каждого элемента навыков
-        doc.text(skill, skillsX, skillY);
+    let currentY = contactY + 160;
+    cv_data.skills.forEach(skill => {
+        doc.fillColor('#333333')
+           .fontSize(12)
+           .text('*  ' + skill, contactX, currentY);
+        currentY += 25;
     });
 
-    // Блок с образованием
-    const educationX = 250; // Позиция по оси X для образования (сдвинуто на 30 пикселей)
-    const educationY = 150; // Позиция по оси Y (на том же уровне, что и контакты)
+    // Languages Section
+    doc.fillColor('#333333')
+       .fontSize(20)
+       .text('LANGUAGES', contactX, currentY + 20);
 
-    // Заголовок блока "Education"
-    doc.fillColor('#070c17'); // Цвет текста
-    doc.fontSize(24).text('Education', educationX, educationY); // Заголовок (размер шрифта 24)
-
-    // Образование
-    doc.fontSize(12); // Размер шрифта для информации об образовании
-    cv_data.education.forEach((edu, index) => {
-        const eduY = educationY + 40 + index * 20; // Позиция для каждого элемента образования
-        doc.text(`${edu.degree} in ${edu.field}, ${edu.institution} (${edu.graduation_year})`, educationX, eduY);
+    currentY += 60;
+    cv_data.languages.forEach(lang => {
+        doc.fillColor('#333333')
+           .fontSize(12)
+           .text(`*  ${lang.name} - ${lang.level}`, contactX, currentY);
+        currentY += 25;
     });
 
-    // Блок с опытом работы
-    const experienceX = 250; // Позиция по оси X для опыта работы (сдвинуто на 30 пикселей)
-    const experienceY = educationY + 100; // Позиция по оси Y (отступ от образования)
+    // Education Section (Right side)
+    let rightX = 420;
+    let rightY = 220;
 
-    // Заголовок блока "Experience"
-    doc.fillColor('#070c17'); // Цвет текста
-    doc.fontSize(24).text('Experience', experienceX, experienceY); // Заголовок (размер шрифта 24)
+    doc.fillColor('#333333')
+       .fontSize(20)
+       .text('EDUCATION', rightX, rightY);
 
-    // Опыт работы
-    doc.fontSize(12); // Размер шрифта для информации об опыте работы
-    cv_data.experience.forEach((exp, index) => {
-        const expY = experienceY + 40 + index * 20; // Позиция для каждого элемента опыта работы
-        doc.text(`${exp.position} at ${exp.company} (${exp.start_date} - ${exp.end_date})`, experienceX, expY);
-        doc.text(`${exp.description}`, experienceX, expY + 15); // Описание
+    rightY += 40;
+    cv_data.education.forEach(edu => {
+        doc.fillColor('#333333')
+           .fontSize(16)
+           .text(`${edu.degree} in ${edu.field}`, rightX, rightY);
+        
+        doc.fillColor('#4A5D5A')
+           .fontSize(14)
+           .text(edu.graduation_year, rightX + 320, rightY, {
+               align: 'right'
+           });
+
+        doc.fillColor('#333333')
+           .fontSize(14)
+           .text(edu.institution, rightX, rightY + 25);
+
+        rightY += 70;
     });
 
-    // Блок с языками
-    const languagesX = 40; // Позиция по оси X для языков (сдвинуто на 30 пикселей)
-    const languagesY = skillsY + 100; // Позиция по оси Y (отступ от навыков)
+    // Experience Section
+    doc.fillColor('#333333')
+       .fontSize(20)
+       .text('EXPERIENCE', rightX, rightY);
 
-    // Заголовок блока "Languages"
-    doc.fillColor('#fff'); // Цвет текста
-    doc.fontSize(24).text('Languages', languagesX, languagesY); // Заголовок (размер шрифта 24)
+    rightY += 40;
+    cv_data.experience.forEach(exp => {
+        doc.fillColor('#333333')
+           .fontSize(16)
+           .text(`${exp.position}`, rightX, rightY);
 
-    // Языки
-    doc.fontSize(12); // Размер шриф��а для информации о языках
-    cv_data.languages.forEach((lang, index) => {
-        const langY = languagesY + 40 + index * 20; // Позиция для каждого элемента языков
-        doc.text(`${lang.name} - ${lang.level}`, languagesX, langY);
+        doc.fillColor('#4A5D5A')
+           .fontSize(14)
+           .text(exp.start_date, rightX + 320, rightY, {
+               align: 'right'
+           });
+
+        doc.fillColor('#333333')
+           .fontSize(14)
+           .text(exp.company, rightX, rightY + 25);
+
+        doc.fontSize(12)
+           .text(exp.description, rightX, rightY + 50, {
+               width: 380
+           });
+
+        rightY += 100;
     });
 }
 
-module.exports = generateTemplate1;
+module.exports = generateTemplate4; 
