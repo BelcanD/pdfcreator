@@ -78,6 +78,7 @@ function generateTemplate2(doc, cv_data) {
     // Right side content starts right after the green header
     let rightX = 240;
     let rightY = 120;
+    const dateX = 600; // Fixed position for dates
 
     // Education Section
     doc.fillColor('#333333')
@@ -96,11 +97,13 @@ function generateTemplate2(doc, cv_data) {
         // Degree title and year on the same line
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(degreeText, rightX, rightY);
+           .text(degreeText, rightX, rightY, {
+               width: 320 // Limit width to prevent overlap with date
+           });
         
         doc.fillColor('#0066cc')
            .fontSize(14)
-           .text(edu.graduation_year, 700, rightY);
+           .text(edu.graduation_year, dateX, rightY);
 
         // Institution on next line
         doc.fillColor('#333333')
@@ -126,11 +129,13 @@ function generateTemplate2(doc, cv_data) {
         // Position title and date on the same line
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(exp.position, rightX, rightY);
+           .text(exp.position, rightX, rightY, {
+               width: 320 // Limit width to prevent overlap with date
+           });
 
         doc.fillColor('#0066cc')
            .fontSize(14)
-           .text(exp.start_date, 700, rightY);
+           .text(exp.start_date, dateX, rightY);
 
         // Company name
         doc.fillColor('#333333')
