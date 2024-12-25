@@ -149,36 +149,20 @@ function generateTemplate1(doc, cv_data) {
 
     // Опыт работы
     cv_data.experience.forEach(exp => {
-        // Position with line breaks
         doc.fillColor('#070c17').fontSize(12);
-        doc.text(exp.position, rightX, rightY);
-        doc.moveDown(0.5);
-
-        // Date range on the right
-        doc.fillColor('#070c17')
-           .fontSize(12);
-        doc.text(exp.start_date, rightX + 250, rightY);
-        if (exp.end_date) {
-            doc.text(exp.end_date, rightX + 250, rightY + 20);
-        }
-
-        // Company
-        doc.fillColor('#070c17').fontSize(12);
-        doc.text(exp.company, rightX, rightY + 30);
-        doc.moveDown(0.5);
-
-        // Description
+        doc.text(`${exp.position} at ${exp.company}`, rightX, rightY);
+        doc.text(`${exp.start_date} - ${exp.end_date}`, rightX + 250, rightY);
+        
         if (exp.description) {
-            doc.fillColor('#070c17').fontSize(12);
-            doc.text(exp.description, rightX, rightY + 50, {
+            doc.moveDown();
+            doc.text(exp.description, rightX, doc.y, {
                 width: 300,
                 align: 'left'
             });
-            doc.moveDown();
-            rightY = doc.y + 15;
-        } else {
-            rightY = doc.y + 15;
         }
+        
+        doc.moveDown();
+        rightY = doc.y + 10;
     });
 }
 
