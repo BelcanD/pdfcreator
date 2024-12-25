@@ -2,7 +2,7 @@ const PDFDocument = require('pdfkit');
 
 function generateTemplate2(doc, cv_data) {
     // Left section (contact info only) - beige panel shorter
-    doc.fillColor('#F2E8E4').rect(0, 0, 200, 250).fill();
+    doc.fillColor('#F2E8E4').rect(0, 0, 200, 200).fill();
 
     // Right section - made wider
     doc.fillColor('#4A5D5A').rect(200, 0, 615, 100).fill();
@@ -76,7 +76,7 @@ function generateTemplate2(doc, cv_data) {
     });
 
     // Right side content starts right after the green header
-    let rightX = 280;
+    let rightX = 240;
     let rightY = 120;
 
     // Education Section
