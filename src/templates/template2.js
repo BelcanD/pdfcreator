@@ -166,11 +166,11 @@ function generateTemplate2(doc, cv_data) {
 
         // Description (with fixed spacing from the last line of company)
         if (exp.description) {
-            const descriptionY = companyY + companyHeight + lineHeight;
+            const descriptionY = companyY + companyHeight + 5;
             const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12);
-            rightY = descriptionY + descriptionHeight + 20;
+            rightY = descriptionY + descriptionHeight + 15;
         } else {
-            rightY = companyY + companyHeight + 20;
+            rightY = companyY + companyHeight + 15;
         }
     });
 }

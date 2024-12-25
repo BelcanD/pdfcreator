@@ -161,7 +161,7 @@ function generateTemplate1(doc, cv_data) {
         const dateText = exp.end_date ? `${exp.start_date} - ${exp.end_date}` : exp.start_date;
         doc.fillColor('#070c17')
            .fontSize(12)
-           .text(dateText, rightX + 300, rightY);
+           .text(dateText, rightX + 270, rightY);
 
         // Company (with fixed spacing from the last line of position)
         const companyY = rightY + (positionLines.length * lineHeight) + 5;
@@ -182,9 +182,9 @@ function generateTemplate1(doc, cv_data) {
                 doc.text(line, rightX, descriptionY + i * lineHeight);
             });
 
-            rightY = descriptionY + (descriptionLines.length * lineHeight) + 20;
+            rightY = descriptionY + (descriptionLines.length * lineHeight) + 15;
         } else {
-            rightY = companyY + (companyLines.length * lineHeight) + 20;
+            rightY = companyY + (companyLines.length * lineHeight) + 15;
         }
     });
 }
