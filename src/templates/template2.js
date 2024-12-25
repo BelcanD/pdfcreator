@@ -80,6 +80,14 @@ function generateTemplate2(doc, cv_data) {
     let rightY = 120;
     const dateX = 500; // Moved dates more to the left
     const titleWidth = 240; // Width for titles before date
+    const standardGap = 25; // Standard gap between elements
+
+    // Helper function to calculate text height
+    function calculateTextHeight(text, width, fontSize) {
+        const avgCharPerLine = width / (fontSize * 0.5);
+        const lines = Math.ceil(text.length / avgCharPerLine);
+        return lines * (fontSize + 2); // fontSize + 2 for line spacing
+    }
 
     // Education Section
     doc.fillColor('#333333')
@@ -93,10 +101,15 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.education.forEach(edu => {
+        const degreeText = `${edu.degree} in ${edu.field}`;
+        
+        // Calculate degree text height
+        const degreeHeight = calculateTextHeight(degreeText, titleWidth, 16);
+        
         // Degree title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(`${edu.degree} in ${edu.field}`, rightX, rightY, {
+           .text(degreeText, rightX, rightY, {
                width: titleWidth,
                align: 'left'
            });
@@ -106,15 +119,15 @@ function generateTemplate2(doc, cv_data) {
            .fontSize(14)
            .text(edu.graduation_year, dateX, rightY);
 
-        // Institution on next line
+        // Institution on next line (after degree text)
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(edu.institution, rightX, rightY + 25, {
+           .text(edu.institution, rightX, rightY + degreeHeight + 10, {
                width: 280,
                align: 'left'
            });
 
-        rightY += 50;
+        rightY += degreeHeight + standardGap + 20; // Total height + standard gap + institution height
     });
 
     // Experience Section
@@ -130,6 +143,8 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.experience.forEach(exp => {
+        const positionHeight = calculateTextHeight(exp.position, titleWidth, 16);
+        
         // Position title
         doc.fillColor('#333333')
            .fontSize(16)
@@ -138,30 +153,31 @@ function generateTemplate2(doc, cv_data) {
                align: 'left'
            });
 
-        // Date on the right
+        // Date range on the right
+        const dateText = exp.end_date ? `${exp.start_date} - ${exp.end_date}` : exp.start_date;
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(exp.start_date, dateX, rightY);
+           .text(dateText, dateX, rightY);
 
-        // Company name
+        // Company name (after position text)
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(exp.company, rightX, rightY + 25, {
+           .text(exp.company, rightX, rightY + positionHeight + 10, {
                width: 280,
                align: 'left'
            });
 
-        // Description with word wrap
+        // Description (after company name)
         if (exp.description) {
             doc.fontSize(12)
-               .text(exp.description, rightX, rightY + 45, {
+               .text(exp.description, rightX, rightY + positionHeight + standardGap + 20, {
                    width: 460,
                    align: 'left',
                    lineGap: 2
                });
-            rightY += 85;
+            rightY += positionHeight + standardGap + 70; // Total height + gaps + description
         } else {
-            rightY += 50;
+            rightY += positionHeight + standardGap + 30; // Total height + gap + company only
         }
     });
 }
