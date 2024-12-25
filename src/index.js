@@ -6,6 +6,7 @@ const PDFDocument = require('pdfkit'); // Импортируем библиот�
 const generateTemplate1 = require('./templates/template1'); // Импортируем первый шаблон
 const generateTemplate2 = require('./templates/template2'); // Импортируем второй шаблон
 const generateTemplate3 = require('./templates/template3'); // Импортируем третий шаблон
+const generateTemplate4 = require('./templates/template4'); // Импортируем четвертый шаблон
 const { PassThrough } = require('stream'); // Импортируем PassThrough для работы с потоками
 
 dotenv.config(); // Загружаем переменные окружения из .env файла
@@ -33,7 +34,7 @@ app.post('/api/v1/generate', (req, res) => {
     }
 
     const doc = new PDFDocument(); // Создаем новый документ PDF
-    let filename = `resume_${cv_data.personal.full_name.replace(/\s+/g, '_')}.pdf`; // Формируем имя ��айла на основе полного имени
+    let filename = `resume_${cv_data.personal.full_name.replace(/\s+/g, '_')}.pdf`; // Формируем имя файла на основе полного имени
     filename = filename.replace(/[^a-zA-Z0-9_\.]/g, ''); // Удаляем недопустимые символы из имени файла
 
     // Устанавливаем заголовки для ответа
@@ -54,6 +55,9 @@ app.post('/api/v1/generate', (req, res) => {
                 break;
             case 3:
                 generateTemplate3(doc, cv_data); // Генерируем резюме по третьему шаблону
+                break;
+            case 4:
+                generateTemplate4(doc, cv_data); // Добавляем поддержку четвертого шаблона
                 break;
             default:
                 return res.status(400).json({ error: 'Bad Request', message: 'Invalid template_id: Template not found' }); // Возвращаем ошибку 400, если шаблон не найден
@@ -80,7 +84,7 @@ app.post('/api/v1/generate', (req, res) => {
     }
 });
 
-// Обработка ошибок для превышения размера входных данных
+// Обработка ошибок ��ля превышения размера входных данных
 app.use((err, req, res, next) => {
     if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
         return res.status(400).json({ error: 'Bad Request', message: 'Request body is too large' }); // Возвращаем ошибку 400, если тело запроса слишком большое

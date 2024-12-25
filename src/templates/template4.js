@@ -1,6 +1,12 @@
 const PDFDocument = require('pdfkit');
 
 function generateTemplate4(doc, cv_data) {
+    // Constants for layout
+    const margin = 40;
+    const pageWidth = 595.28;
+    const rightX = margin;
+    let rightY = margin;
+
     doc.fillColor('#333').fontSize(30).text('Professional Profile', { align: 'center' });
     doc.moveDown();
     doc.fillColor('#000').fontSize(18).text(`Name: ${cv_data.personal.full_name}`);
@@ -10,6 +16,8 @@ function generateTemplate4(doc, cv_data) {
     doc.fillColor('#555').fontSize(20).text('Professional Summary');
     doc.fillColor('#000').fontSize(14).text(cv_data.profile);
     doc.moveDown();
+
+    rightY = doc.y + 30;
 
     doc.fillColor('#070c17')
        .fontSize(24)
@@ -26,7 +34,7 @@ function generateTemplate4(doc, cv_data) {
 
     rightY = doc.y + 30;
 
-    // Блок с опытом работы
+    // Experience section
     doc.fillColor('#070c17')
        .fontSize(24)
        .text('Experience', rightX, rightY);
