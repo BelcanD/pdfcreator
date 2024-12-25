@@ -15,28 +15,28 @@ function generateTemplate3(doc, cv_data) {
        .fillColor(mainBlue)
        .text(cv_data.personal.full_name.toUpperCase(), margin, margin, { align: 'center' });
 
-    // Contact Information with beige tiles
+    // Contact Information
     const contactY = margin + 60;
     const contactHeight = 25;
     const contactWidth = 250;
     const contactX = (pageWidth - contactWidth) / 2;
 
-    // Phone tile
+    // Phone tile (with beige background)
     doc.rect(contactX - 10, contactY - 5, contactWidth + 20, contactHeight)
        .fill(beigeColor);
     doc.fontSize(12)
        .fillColor('#333')
        .text(cv_data.personal.phone, contactX, contactY, { align: 'center' });
 
-    // Location tile
-    doc.rect(contactX - 10, contactY + 25 - 5, contactWidth + 20, contactHeight)
-       .fill(beigeColor);
-    doc.text(cv_data.personal.location, contactX, contactY + 25, { align: 'center' });
+    // Location (without background)
+    doc.fontSize(12)
+       .fillColor('#333')
+       .text(cv_data.personal.location, contactX, contactY + 25, { align: 'center' });
 
-    // Email tile
-    doc.rect(contactX - 10, contactY + 50 - 5, contactWidth + 20, contactHeight)
-       .fill(beigeColor);
-    doc.text(cv_data.personal.email, contactX, contactY + 50, { align: 'center' });
+    // Email (without background)
+    doc.fontSize(12)
+       .fillColor('#333')
+       .text(cv_data.personal.email, contactX, contactY + 50, { align: 'center' });
 
     const contentStartY = contactY + 100;
     const leftX = margin;
