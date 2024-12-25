@@ -158,10 +158,12 @@ function generateTemplate1(doc, cv_data) {
         });
 
         // Date range on the right
-        const dateText = exp.end_date ? `${exp.start_date} - ${exp.end_date}` : exp.start_date;
         doc.fillColor('#070c17')
-           .fontSize(12)
-           .text(dateText, rightX + 250, rightY, { width: 200 });
+           .fontSize(12);
+        doc.text(exp.start_date, rightX + 250, rightY);
+        if (exp.end_date) {
+            doc.text(exp.end_date, rightX + 250, rightY + lineHeight);
+        }
 
         // Company (with fixed spacing from the last line of position)
         const companyY = rightY + (positionLines.length * lineHeight) + 5;
@@ -182,9 +184,9 @@ function generateTemplate1(doc, cv_data) {
                 doc.text(line, rightX, descriptionY + i * lineHeight);
             });
 
-            rightY = descriptionY + (descriptionLines.length * lineHeight) + 10;
+            rightY = descriptionY + (descriptionLines.length * lineHeight) + 5;
         } else {
-            rightY = companyY + (companyLines.length * lineHeight) + 10;
+            rightY = companyY + (companyLines.length * lineHeight) + 5;
         }
     });
 }
