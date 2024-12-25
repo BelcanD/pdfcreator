@@ -79,6 +79,8 @@ function generateTemplate2(doc, cv_data) {
     let rightX = 240;
     let rightY = 120;
     const dateX = 400; // Moved dates closer
+    const titleWidth = 150; // Width for titles
+    const dateMargin = 10; // Margin between title and date
 
     // Education Section
     doc.fillColor('#333333')
@@ -98,12 +100,12 @@ function generateTemplate2(doc, cv_data) {
         doc.fillColor('#333333')
            .fontSize(16)
            .text(degreeText, rightX, rightY, {
-               width: 320 // Limit width to prevent overlap with date
+               width: titleWidth // Fixed width for title
            });
         
-        doc.fillColor('#333333') // Changed date color to black
+        doc.fillColor('#333333')
            .fontSize(14)
-           .text(edu.graduation_year, dateX, rightY);
+           .text(edu.graduation_year, rightX + titleWidth + dateMargin, rightY);
 
         // Institution on next line
         doc.fillColor('#333333')
@@ -130,12 +132,12 @@ function generateTemplate2(doc, cv_data) {
         doc.fillColor('#333333')
            .fontSize(16)
            .text(exp.position, rightX, rightY, {
-               width: 320 // Limit width to prevent overlap with date
+               width: titleWidth // Fixed width for title
            });
 
-        doc.fillColor('#333333') // Changed date color to black
+        doc.fillColor('#333333')
            .fontSize(14)
-           .text(exp.start_date, dateX, rightY);
+           .text(exp.start_date, rightX + titleWidth + dateMargin, rightY);
 
         // Company name
         doc.fillColor('#333333')
