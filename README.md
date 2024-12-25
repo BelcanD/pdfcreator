@@ -16,40 +16,43 @@
 Запрос должен содержать JSON со следующей структурой:
 ```json
 {
-  "template": "template1",
-  "personal": {
-    "full_name": "Имя Фамилия",
-    "title": "Должность",
-    "phone": "+7 XXX XXX XX XX",
-    "email": "email@example.com",
-    "location": "Город, Страна"
-  },
-  "education": [
-    {
-      "degree": "Степень",
-      "field": "Специальность",
-      "institution": "Учебное заведение",
-      "graduation_year": "2020"
-    }
-  ],
-  "experience": [
-    {
-      "position": "Должность",
-      "company": "Компания",
-      "start_date": "2020",
-      "description": "Описание обязанностей"
-    }
-  ],
-  "skills": [
-    "Навык 1",
-    "Навык 2"
-  ],
-  "languages": [
-    {
-      "name": "Английский",
-      "level": "B2"
-    }
-  ]
+  "template_id": 1,
+  "cv_data": {
+    "personal": {
+      "full_name": "Имя Фамилия",
+      "title": "Должность",
+      "phone": "+7 XXX XXX XX XX",
+      "email": "email@example.com",
+      "location": "Город, Страна"
+    },
+    "education": [
+      {
+        "degree": "Степень",
+        "field": "Специальность",
+        "institution": "Учебное заведение",
+        "graduation_year": "2020"
+      }
+    ],
+    "experience": [
+      {
+        "position": "Должность",
+        "company": "Компания",
+        "start_date": "2020-01-01",
+        "end_date": "2020-12-31",
+        "description": "Описание обязанностей"
+      }
+    ],
+    "skills": [
+      "Навык 1",
+      "Навык 2"
+    ],
+    "languages": [
+      {
+        "name": "Английский",
+        "level": "B2"
+      }
+    ]
+  }
 }
 ```
 
@@ -71,7 +74,7 @@ curl -X POST http://localhost:3000/generate-pdf \
 ```json
 {
   "error": "Неверный формат данных",
-  "details": "Отсутствует обязательное поле 'personal.full_name'"
+  "details": "Отсутствует обязательное поле 'cv_data.personal.full_name'"
 }
 ```
 
@@ -95,6 +98,7 @@ curl -X POST http://localhost:3000/generate-pdf \
    - Массив объектов
    - position и company обязательны
    - description опционально
+   - Даты в формате YYYY-MM-DD
 
 4. Навыки (skills):
    - Массив строк
@@ -135,37 +139,120 @@ npm start
 - PORT: порт для запуска сервера (по умолчанию 3000)
 - NODE_ENV: окружение (development/production)
 
-## Док��ментация по формату шаблонов
+## Создание новых шаблонов
 
 ### Структура шаблона
 Шаблоны находятся в директории `src/templates/` и представляют собой JavaScript-файлы, экспортирующие функцию генерации PDF.
 
-### Создание нового шаблона
-1. Создайте новый файл в директории templates
-2. Импортируйте PDFKit
-3. Создайте функцию, принимающую параметры doc и cv_data
-4. Реализуйте логику отрисовки резюме
-5. Экспортируйте функцию
+### Шаги создания нового шаблона
 
-### Пример структуры шаблона
+1. Создайте новый файл в директории templates:
+```bash
+touch src/templates/templateX.js  # где X - номер шаблона
+```
+
+2. Базовая структура шаблона:
 ```javascript
 const PDFDocument = require('pdfkit');
 
 function generateTemplateX(doc, cv_data) {
-    // Логика генерации PDF
+    // Константы для форматирования
+    const maxLineWidth = 30;
+    const lineHeight = 20;
+    
+    // Вспомогательные функции
+    function formatLongText(text, maxWidth) {
+        if (!text) return [];
+        const words = text.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            if ((currentLine + ' ' + words[i]).length <= maxWidth) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    // Основные секции
+    // 1. Заголовок
+    doc.fillColor('#000000')
+       .fontSize(24)
+       .text(cv_data.personal.full_name, 40, 40);
+
+    // 2. Контактная информация
+    // 3. Образование
+    // 4. Опыт работы
+    // 5. Навыки
+    // 6. Языки
 }
 
 module.exports = generateTemplateX;
 ```
 
+3. Добавьте шаблон в систему:
+```javascript
+// src/templates/index.js
+const template1 = require('./template1');
+const template2 = require('./template2');
+const templateX = require('./templateX');
+
+module.exports = {
+    1: template1,
+    2: template2,
+    X: templateX
+};
+```
+
+### Команды для работы с шаблонами
+
+1. Создание нового шаблона:
+```bash
+# Создание файла шаблона
+cp src/templates/template1.js src/templates/templateX.js
+
+# Добавление в систему контроля версий
+git add src/templates/templateX.js
+git commit -m "Added new template X"
+```
+
+2. Тестирование шаблона:
+```bash
+# Запуск тестов
+npm test
+
+# Генерация тестового PDF
+curl -X POST http://localhost:3000/generate-pdf \
+  -H "Content-Type: application/json" \
+  -d '{"template_id": X, "cv_data": {...}}' \
+  > test.pdf
+```
+
+### Рекомендации по созданию шаблонов
+
+1. Форматирование текста:
+   - Используйте `maxLineWidth` для контроля переноса строк
+   - Добавляйте отступы между секциями
+   - Учитывайте длину текста при расчете позиций
+
+2. Цвета и стили:
+   - Используйте контрастные цвета
+   - Соблюдайте иерархию шрифтов
+   - Добавляйте разделительные линии
+
+3. Отладка:
+   - Используйте комментарии для пометок
+   - Тестируйте с разными данными
+   - Проверяйте корректность отображения длинных текстов
+
 ### Доступные шаблоны
 1. template1 - Классический шаблон
 2. template2 - Современный шаблон с боковой панелью
-
-### Кастомизация шаблонов
-- Можно настраивать цвета, шрифты, отступы
-- Поддерживается добавление изображений
-- Возможно создание собственных секций
 
 ## Поддержка и обратная связь
 По вопросам работы сервиса обращайтесь в раздел Issues на GitHub. 
