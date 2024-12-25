@@ -91,24 +91,32 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 50;
     cv_data.education.forEach(edu => {
+        // Degree title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(`${edu.degree} in ${edu.field}`, rightX, rightY);
+           .text(`${edu.degree} in ${edu.field}`, rightX, rightY, {
+               width: 400,
+               continued: false
+           });
         
-        doc.fillColor('#4A5D5A')
+        // Year on the right
+        doc.fillColor('#0066cc')
            .fontSize(14)
-           .text(edu.graduation_year, rightX + 420, rightY, {
-               align: 'right'
+           .text(edu.graduation_year, rightX + 460, rightY, {
+               align: 'right',
+               width: 80
            });
 
+        // Institution on next line
         doc.fillColor('#333333')
            .fontSize(14)
            .text(edu.institution, rightX, rightY + 25);
 
-        rightY += 70;
+        rightY += 60;
     });
 
     // Experience Section
+    rightY += 10;
     doc.fillColor('#333333')
        .fontSize(20)
        .text('EXPERIENCE', rightX, rightY);
@@ -120,26 +128,34 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 50;
     cv_data.experience.forEach(exp => {
+        // Position title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(`${exp.position}`, rightX, rightY);
-
-        doc.fillColor('#4A5D5A')
-           .fontSize(14)
-           .text(exp.start_date, rightX + 420, rightY, {
-               align: 'right'
+           .text(`${exp.position}`, rightX, rightY, {
+               width: 400,
+               continued: false
            });
 
+        // Date on the right
+        doc.fillColor('#0066cc')
+           .fontSize(14)
+           .text(exp.start_date, rightX + 460, rightY, {
+               align: 'right',
+               width: 80
+           });
+
+        // Company name
         doc.fillColor('#333333')
            .fontSize(14)
            .text(exp.company, rightX, rightY + 25);
 
+        // Description
         doc.fontSize(12)
            .text(exp.description, rightX, rightY + 50, {
-               width: 500
+               width: 520
            });
 
-        rightY += 100;
+        rightY += 90;
     });
 }
 
