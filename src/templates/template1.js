@@ -145,24 +145,18 @@ function generateTemplate1(doc, cv_data) {
     doc.fillColor('#070c17')
        .fontSize(24)
        .text('Experience', rightX, rightY);
-    rightY += 40;
+    doc.moveDown();
 
-    // Опыт работы
     cv_data.experience.forEach(exp => {
-        doc.fillColor('#070c17').fontSize(12);
-        doc.text(`${exp.position} at ${exp.company}`, rightX, rightY);
-        doc.text(`${exp.start_date} - ${exp.end_date}`, rightX + 250, rightY);
-        
+        doc.fillColor('#070c17')
+           .fontSize(12)
+           .text(`${exp.position} at ${exp.company}`);
+        doc.text(`Period: ${exp.start_date} - ${exp.end_date}`);
         if (exp.description) {
             doc.moveDown();
-            doc.text(exp.description, rightX, doc.y, {
-                width: 300,
-                align: 'left'
-            });
+            doc.text(exp.description);
         }
-        
         doc.moveDown();
-        rightY = doc.y + 10;
     });
 }
 

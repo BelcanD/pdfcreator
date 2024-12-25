@@ -149,28 +149,20 @@ function generateTemplate2(doc, cv_data) {
        .lineTo(750, rightY + 25)
        .stroke('#333333');
 
-    rightY += 40;
+    doc.moveDown();
+
     cv_data.experience.forEach(exp => {
-        doc.fillColor('#333333').fontSize(16);
-        doc.text(`${exp.position} at ${exp.company}`, rightX, rightY, {
-            width: 250,
-            align: 'left'
-        });
-        
-        doc.fillColor('#333333').fontSize(14);
-        doc.text(`${exp.start_date} - ${exp.end_date}`, dateX, rightY);
-        
+        doc.fillColor('#333333')
+           .fontSize(16)
+           .text(`${exp.position} at ${exp.company}`);
+        doc.fontSize(14)
+           .text(`Period: ${exp.start_date} - ${exp.end_date}`);
         if (exp.description) {
             doc.moveDown();
-            doc.fillColor('#333333').fontSize(12);
-            doc.text(exp.description, rightX, doc.y, {
-                width: 250,
-                align: 'left'
-            });
+            doc.fontSize(12)
+               .text(exp.description);
         }
-        
         doc.moveDown();
-        rightY = doc.y + 10;
     });
 }
 
