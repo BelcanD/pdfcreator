@@ -120,22 +120,17 @@ function generateTemplate2(doc, cv_data) {
        .lineTo(750, rightY + 25)
        .stroke('#333333');
 
-    rightY += 40;
+    doc.moveDown();
+
     cv_data.education.forEach(edu => {
-        // Degree and field
-        const degreeText = `${edu.degree} in ${edu.field}`;
-        const degreeHeight = renderFormattedText(degreeText, rightX, rightY, 16);
-
-        // Year on the right
         doc.fillColor('#333333')
-           .fontSize(14)
-           .text(edu.graduation_year, dateX, rightY);
-
-        // Institution with proper spacing
-        const institutionY = rightY + degreeHeight + lineHeight;
-        const institutionHeight = renderFormattedText(edu.institution, rightX, institutionY, 14);
-
-        rightY = institutionY + institutionHeight + lineHeight;
+           .fontSize(16)
+           .text(`${edu.degree} in ${edu.field}`);
+        doc.fontSize(14)
+           .text(`${edu.institution}`);
+        doc.fontSize(14)
+           .text(`Graduation: ${edu.graduation_year}`);
+        doc.moveDown();
     });
 
     // Experience Section

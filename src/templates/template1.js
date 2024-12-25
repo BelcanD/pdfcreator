@@ -110,35 +110,14 @@ function generateTemplate1(doc, cv_data) {
     doc.fillColor('#070c17')
        .fontSize(24)
        .text('Education', rightX, rightY);
-    rightY += 40;
+    doc.moveDown();
 
-    // Образование
-    cv_data.education.forEach((edu, index) => {
-        // Degree and field
-        const degreeText = `${edu.degree} in ${edu.field}`;
-        const degreeLines = formatLongText(degreeText, maxLineWidth);
-        
-        doc.fillColor('#070c17').fontSize(12);
-        degreeLines.forEach((line, i) => {
-            doc.text(line, rightX, rightY + i * lineHeight);
-        });
-
-        // Year on the right
-        doc.fillColor('#070c17')
-           .fontSize(12)
-           .text(edu.graduation_year, rightX + 380, rightY);
-
-        // Institution (with fixed spacing from the last line of degree)
-        const institutionY = rightY + (degreeLines.length * lineHeight) + 5;
-        const institutionLines = formatLongText(edu.institution, maxLineWidth);
-        
-        doc.fillColor('#070c17').fontSize(12);
-        institutionLines.forEach((line, i) => {
-            doc.text(line, rightX, institutionY + i * lineHeight);
-        });
-
-        // Calculate next item position
-        rightY = institutionY + (institutionLines.length * lineHeight) + sectionSpacing;
+    cv_data.education.forEach(edu => {
+        doc.fillColor('#000').fontSize(14)
+           .text(`${edu.degree} in ${edu.field}`);
+        doc.text(`${edu.institution}`);
+        doc.text(`Graduation: ${edu.graduation_year}`);
+        doc.moveDown();
     });
 
     // Блок с опытом работы
