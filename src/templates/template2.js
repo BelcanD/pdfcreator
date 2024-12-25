@@ -158,19 +158,19 @@ function generateTemplate2(doc, cv_data) {
         const dateText = exp.end_date ? `${exp.start_date} - ${exp.end_date}` : exp.start_date;
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(dateText, dateX, rightY);
+           .text(dateText, dateX, rightY, { width: 200 });
 
         // Company name with proper spacing
-        const companyY = rightY + positionHeight + lineHeight;
+        const companyY = rightY + positionHeight + 5;
         const companyHeight = renderFormattedText(exp.company, rightX, companyY, 14);
 
         // Description (with fixed spacing from the last line of company)
         if (exp.description) {
             const descriptionY = companyY + companyHeight + 5;
             const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12);
-            rightY = descriptionY + descriptionHeight + 15;
+            rightY = descriptionY + descriptionHeight + 10;
         } else {
-            rightY = companyY + companyHeight + 15;
+            rightY = companyY + companyHeight + 10;
         }
     });
 }
