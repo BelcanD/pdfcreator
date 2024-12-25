@@ -78,8 +78,14 @@ function generateTemplate2(doc, cv_data) {
     // Right side content starts right after the green header
     let rightX = 240;
     let rightY = 120;
-    const titleWidth = 300; // Increased width for titles
-    const dateX = 600; // Fixed position for dates
+    const dateX = 550; // Adjusted date position
+    const maxLength = 30; // Maximum characters per line
+
+    // Helper function to truncate text
+    function truncateText(text, maxLen) {
+        if (text.length <= maxLen) return text;
+        return text.substring(0, maxLen - 3) + '...';
+    }
 
     // Education Section
     doc.fillColor('#333333')
@@ -93,10 +99,15 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.education.forEach(edu => {
+        const degreeText = truncateText(`${edu.degree} in ${edu.field}`, maxLength);
+        
         // Degree title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(`${edu.degree} in ${edu.field}`, rightX, rightY);
+           .text(degreeText, rightX, rightY, {
+               width: 280,
+               align: 'left'
+           });
 
         // Year on the right
         doc.fillColor('#333333')
@@ -104,11 +115,15 @@ function generateTemplate2(doc, cv_data) {
            .text(edu.graduation_year, dateX, rightY);
 
         // Institution on next line
+        const institutionText = truncateText(edu.institution, maxLength);
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(edu.institution, rightX, rightY + 20);
+           .text(institutionText, rightX, rightY + 25, {
+               width: 280,
+               align: 'left'
+           });
 
-        rightY += 45;
+        rightY += 50;
     });
 
     // Experience Section
@@ -124,10 +139,15 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.experience.forEach(exp => {
+        const positionText = truncateText(exp.position, maxLength);
+        
         // Position title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(exp.position, rightX, rightY);
+           .text(positionText, rightX, rightY, {
+               width: 280,
+               align: 'left'
+           });
 
         // Date on the right
         doc.fillColor('#333333')
@@ -135,20 +155,25 @@ function generateTemplate2(doc, cv_data) {
            .text(exp.start_date, dateX, rightY);
 
         // Company name
+        const companyText = truncateText(exp.company, maxLength);
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(exp.company, rightX, rightY + 20);
+           .text(companyText, rightX, rightY + 25, {
+               width: 280,
+               align: 'left'
+           });
 
-        // Description
+        // Description with word wrap
         if (exp.description) {
             doc.fontSize(12)
-               .text(exp.description, rightX, rightY + 40, {
+               .text(exp.description, rightX, rightY + 45, {
                    width: 460,
-                   align: 'left'
+                   align: 'left',
+                   lineGap: 2
                });
-            rightY += 70;
+            rightY += 85;
         } else {
-            rightY += 45;
+            rightY += 50;
         }
     });
 }
