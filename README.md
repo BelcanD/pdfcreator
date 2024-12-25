@@ -16,44 +16,40 @@
 Запрос должен содержать JSON со следующей структурой:
 ```json
 {
-  "template_id": 1,
+  "template_id": 3,
   "cv_data": {
     "personal": {
-      "full_name": "Имя Фамилия",
-      "title": "Должность",
-      "phone": "+7 XXX XXX XX XX",
-      "email": "email@example.com",
-      "location": "Город, Страна",
-      "website": "https://example.com",
-      "image": "base64_encoded_image" // опционально
+      "full_name": "Ivan Ivanov",
+      "email": "ivan.ivanov@example.com",
+      "phone": "+7 123 456 7890",
+      "location": "Moscow, Russia"
     },
-    "profile": "Краткое описание профессионального опыта",
+    "skills": [
+      "JavaScript",
+      "Node.js",
+      "PDF Generation"
+    ],
     "education": [
       {
-        "degree": "Степень",
-        "field": "Специальность",
-        "institution": "Учебное заведение",
-        "graduation_year": "2020",
-        "description": "Дополнительная информация" // опционально
+        "degree": "Master",
+        "field": "Computer Science",
+        "institution": "Saint Petersburg State University",
+        "graduation_year": "2022"
       }
     ],
     "experience": [
       {
-        "position": "Должность",
-        "company": "Компания",
+        "position": "Developer",
+        "company": "LLC Horns and Hooves",
         "start_date": "2020-01-01",
-        "end_date": "2020-12-31",
-        "description": "Описание обязанностей и достижений"
-      }
-    ],
-    "skills": [
-      "Навык 1",
-      "Навык 2"
+        "end_date": "2022-12-31",
+        "description": "Development of web applications on Node.js"
+      }     
     ],
     "languages": [
       {
-        "name": "Английский",
-        "level": "C1"
+        "name": "Russian",
+        "level": "Native"
       }
     ]
   }
@@ -159,7 +155,7 @@ npm start
 
 4. Обработка текста:
    ```javascript
-   // Добавьте поддержку переноса строк
+   // Доб��вьте поддержку переноса строк
    doc.text(text, x, y, {
        width: maxWidth,
        align: 'left'
@@ -211,14 +207,115 @@ case X:
 
 1. Создайте тестовый запрос:
 ```bash
-curl -X POST http://localhost:3000/api/v1/generate\
-  -H "Authorization: Bearer ваш_api_ключ" \
+curl -X POST https://pdfcreator-eta.vercel.app/api/v1/generate \
+  -H "Authorization: Bearer api_ключ" \
   -H "Content-Type: application/json" \
-  -d '{"template_id": X, "cv_data": {...}}' \
-  > test.pdf
+  -d '{
+  "template_id": 1,
+  "cv_data": {
+    "personal": {
+      "full_name": "Ivan Ivanov",
+      "email": "ivan.ivanov@example.com",
+      "phone": "+7 123 456 7890",
+      "location": "Moscow, Russia"
+    },
+    "skills": [
+      "JavaScript",
+      "Node.js",
+      "PDF Generation"
+    ],
+    "education": [
+      {
+        "degree": "Master",
+        "field": "Computer Science",
+        "institution": "Saint Petersburg State University",
+        "graduation_year": "2022"
+      }
+    ],
+    "experience": [
+      {
+        "position": "Developer",
+        "company": "LLC Horns and Hooves",
+        "start_date": "2020-01-01",
+        "end_date": "2022-12-31",
+        "description": "Development of web applications on Node.js"
+      }     
+    ],
+    "languages": [
+      {
+        "name": "Russian",
+        "level": "Native"
+      }
+    ]
+  }
+}' \
+  > resume.pdf
 ```
 
 2. Проверьте результат:
-- Откройте test.pdf
+- Откройте resume.pdf
 - Убедитесь в корректном отображении всех элементов
-- Проверьте работу с разными данными 
+- Проверьте работу с разными данными
+
+### Тестирование через Postman
+
+1. Откройте Postman и создайте новый запрос:
+   - Метод: POST
+   - URL: https://pdfcreator-eta.vercel.app/api/v1/generate
+
+2. Настройте заголовки (Headers):
+   - Content-Type: application/json
+   - Authorization: Bearer api_ключ
+
+3. В теле запроса (Body) выберите "raw" и формат JSON. Вставьте следующий пример:
+```json
+{
+  "template_id": 1,
+  "cv_data": {
+    "personal": {
+      "full_name": "Ivan Ivanov",
+      "email": "ivan.ivanov@example.com",
+      "phone": "+7 123 456 7890",
+      "location": "Moscow, Russia"
+    },
+    "skills": [
+      "JavaScript",
+      "Node.js",
+      "PDF Generation"
+    ],
+    "education": [
+      {
+        "degree": "Master",
+        "field": "Computer Science",
+        "institution": "Saint Petersburg State University",
+        "graduation_year": "2022"
+      }
+    ],
+    "experience": [
+      {
+        "position": "Developer",
+        "company": "LLC Horns and Hooves",
+        "start_date": "2020-01-01",
+        "end_date": "2022-12-31",
+        "description": "Development of web applications on Node.js"
+      }     
+    ],
+    "languages": [
+      {
+        "name": "Russian",
+        "level": "Native"
+      }
+    ]
+  }
+} 
+```
+
+4. Отправьте запрос:
+   - Нажмите кнопку "Send"
+   - В ответ вы получите PDF-файл с готовым резюме
+
+5. Проверьте разные шаблоны:
+   - Измените значение "template_id" (доступны значения 1, 2, 3 или 4)
+   - Протестируйте с разными наборами данных
+   - Убедитесь, что все секции отображаются корректно
+</rewritten_file>
