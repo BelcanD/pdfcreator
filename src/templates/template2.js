@@ -152,18 +152,11 @@ function generateTemplate2(doc, cv_data) {
     doc.moveDown();
 
     cv_data.experience.forEach(exp => {
-        doc.fillColor('#333333')
-           .fontSize(16)
-           .text(`${exp.position} at ${exp.company}`);
-        doc.fontSize(14)
-           .text(`Period: ${exp.start_date} - ${exp.end_date}`);
-        if (exp.description) {
-            doc.moveDown();
-            doc.fontSize(12)
-               .text(exp.description);
-        }
-        doc.moveDown();
-    });
+      doc.fillColor('#000').fontSize(14).text(`${exp.position} at ${exp.company}`);
+      doc.text(`Period: ${exp.start_date} - ${exp.end_date}`);
+      doc.text(exp.description);
+      doc.moveDown();
+  });
 }
 
 module.exports = generateTemplate2; 

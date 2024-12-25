@@ -146,16 +146,10 @@ function generateTemplate1(doc, cv_data) {
        .fontSize(24)
        .text('Experience', rightX, rightY);
     doc.moveDown();
-
     cv_data.experience.forEach(exp => {
-        doc.fillColor('#070c17')
-           .fontSize(12)
-           .text(`${exp.position} at ${exp.company}`);
+        doc.fillColor('#000').fontSize(14).text(`${exp.position} at ${exp.company}`);
         doc.text(`Period: ${exp.start_date} - ${exp.end_date}`);
-        if (exp.description) {
-            doc.moveDown();
-            doc.text(exp.description);
-        }
+        doc.text(exp.description);
         doc.moveDown();
     });
 }
