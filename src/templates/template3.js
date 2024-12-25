@@ -5,133 +5,144 @@ function generateTemplate3(doc, cv_data) {
     const pageWidth = 595.28;
     const pageHeight = 841.89;
     const margin = 40;
-    const imageSize = 200;
+    const leftColumnWidth = 200;
+    const beigeColor = '#F5F5DC';
+    const mainBlue = '#1B365C';
 
-    // Add profile image
-    if (cv_data.personal.image) {
-        doc.image(cv_data.personal.image, margin, margin, {
-            width: imageSize,
-            height: imageSize
-        });
-    }
-
-    // Name and Title
+    // Name at the top
     doc.font('Helvetica-Bold')
        .fontSize(32)
-       .fillColor('#1B365C')
-       .text(cv_data.personal.full_name.toUpperCase(), imageSize + margin * 2, margin);
+       .fillColor(mainBlue)
+       .text(cv_data.personal.full_name.toUpperCase(), margin, margin, { align: 'center' });
 
-    doc.font('Helvetica')
-       .fontSize(18)
-       .fillColor('#1B365C')
-       .text(cv_data.personal.title, imageSize + margin * 2, margin + 40);
+    // Contact Information with beige tiles
+    const contactY = margin + 60;
+    const contactHeight = 25;
+    const contactWidth = 200;
+    const contactX = (pageWidth - contactWidth) / 2;
 
-    // Contact Information with icons
-    const contactY = margin + 80;
+    // Phone tile
+    doc.rect(contactX - 10, contactY - 5, contactWidth + 20, contactHeight)
+       .fill(beigeColor);
     doc.fontSize(12)
-       .fillColor('#333');
-    
-    // Phone
-    doc.text(cv_data.personal.phone, imageSize + margin * 2, contactY);
-    
-    // Address
-    doc.text(cv_data.personal.location, imageSize + margin * 2, contactY + 25);
-    
-    // Email
-    doc.text(cv_data.personal.email, imageSize + margin * 2, contactY + 50);
-    
-    // Website/Portfolio
-    if (cv_data.personal.website) {
-        doc.text(cv_data.personal.website, imageSize + margin * 2, contactY + 75);
-    }
+       .fillColor('#333')
+       .text(cv_data.personal.phone, contactX, contactY, { align: 'center' });
 
-    // Profile Section
-    const profileY = margin + imageSize + 20;
+    // Location tile
+    doc.rect(contactX - 10, contactY + 25 - 5, contactWidth + 20, contactHeight)
+       .fill(beigeColor);
+    doc.text(cv_data.personal.location, contactX, contactY + 25, { align: 'center' });
+
+    // Email tile
+    doc.rect(contactX - 10, contactY + 50 - 5, contactWidth + 20, contactHeight)
+       .fill(beigeColor);
+    doc.text(cv_data.personal.email, contactX, contactY + 50, { align: 'center' });
+
+    const contentStartY = contactY + 100;
+    const leftX = margin;
+    const rightX = pageWidth / 2 + margin;
+    let leftY = contentStartY;
+    let rightY = contentStartY;
+
+    // Left Column
+    // Skills Section with blue frame
+    doc.rect(leftX - 10, leftY - 10, leftColumnWidth + 20, 100)
+       .lineWidth(2)
+       .stroke(mainBlue);
+
     doc.font('Helvetica-Bold')
        .fontSize(16)
-       .fillColor('#1B365C')
-       .text('PROFILE', margin, profileY);
+       .fillColor(mainBlue)
+       .text('SKILLS', leftX, leftY);
 
     doc.font('Helvetica')
        .fontSize(12)
        .fillColor('#333')
-       .text(cv_data.profile || 'Extensive experience in gourmet restaurants and the ability to lead large teams. Ease of developing good interpersonal relationships and ensuring customer satisfaction.', 
-             margin, profileY + 25, {
-                 width: imageSize - 20,
+       .text(cv_data.skills || 'Technical skills include: JavaScript, Node.js, React, Python', 
+             leftX, leftY + 25, {
+                 width: leftColumnWidth,
                  align: 'left'
              });
 
     // Education Section
-    const eduY = profileY + 120;
+    leftY += 120;
     doc.font('Helvetica-Bold')
        .fontSize(16)
-       .fillColor('#1B365C')
-       .text('EDUCATION', margin, eduY);
+       .fillColor(mainBlue)
+       .text('EDUCATION', leftX, leftY);
 
-    let currentY = eduY + 25;
+    leftY += 25;
     cv_data.education.forEach(edu => {
-        doc.font('Helvetica')
+        doc.font('Helvetica-Bold')
            .fontSize(12)
            .fillColor('#333')
-           .text(`${edu.graduation_year} - ${edu.degree}`, margin, currentY);
-        currentY += 20;
+           .text(`${edu.degree} in ${edu.field}`, leftX, leftY);
+        
+        doc.font('Helvetica')
+           .fontSize(12)
+           .text(edu.institution, leftX, leftY + 20)
+           .text(`Graduation: ${edu.graduation_year}`, leftX, leftY + 40);
+        
+        if (edu.description) {
+            doc.text(edu.description, leftX, leftY + 60, {
+                width: leftColumnWidth
+            });
+        }
+        
+        leftY += 100;
     });
 
     // Languages Section
-    const langY = currentY + 30;
     doc.font('Helvetica-Bold')
        .fontSize(16)
-       .fillColor('#1B365C')
-       .text('LANGUAGES', margin, langY);
+       .fillColor(mainBlue)
+       .text('LANGUAGES', leftX, leftY);
 
-    currentY = langY + 25;
+    leftY += 25;
     cv_data.languages.forEach(lang => {
         doc.font('Helvetica')
            .fontSize(12)
            .fillColor('#333')
-           .text(`${lang.name} - ${lang.level}`, margin, currentY);
-        currentY += 20;
+           .text(`${lang.name} - ${lang.level}`, leftX, leftY);
+        leftY += 20;
     });
 
-    // Experiences Section with Timeline
-    const expX = imageSize + margin * 2;
+    // Right Column - Experiences Section with Timeline
     doc.font('Helvetica-Bold')
        .fontSize(16)
-       .fillColor('#1B365C')
-       .text('EXPERIENCES', expX, profileY);
+       .fillColor(mainBlue)
+       .text('EXPERIENCES', rightX, rightY);
 
-    let expY = profileY + 40;
+    rightY += 40;
     cv_data.experience.forEach((exp, index) => {
         // Timeline dot
-        doc.circle(expX + 10, expY + 10, 5)
-           .fillAndStroke('#1B365C');
+        doc.circle(rightX + 10, rightY + 10, 5)
+           .fillAndStroke(mainBlue);
 
-        // Vertical line to next item if not last item
-        if (index < cv_data.experience.length - 1) {
-            doc.moveTo(expX + 10, expY + 15)
-               .lineTo(expX + 10, expY + 80)
-               .stroke('#1B365C');
-        }
+        // Vertical line for all items
+        doc.moveTo(rightX + 10, rightY + 15)
+           .lineTo(rightX + 10, rightY + 80)
+           .stroke(mainBlue);
 
         // Experience details
         doc.font('Helvetica-Bold')
            .fontSize(14)
-           .fillColor('#1B365C')
-           .text(exp.company.toUpperCase(), expX + 30, expY);
+           .fillColor(mainBlue)
+           .text(exp.company.toUpperCase(), rightX + 30, rightY);
 
         doc.font('Helvetica')
            .fontSize(12)
            .fillColor('#333')
-           .text(`Role: ${exp.position}`, expX + 30, expY + 20)
-           .text(`Period: ${exp.start_date} to ${exp.end_date}`, expX + 30, expY + 40);
+           .text(`Role: ${exp.position}`, rightX + 30, rightY + 20)
+           .text(`Period: ${exp.start_date} to ${exp.end_date}`, rightX + 30, rightY + 40);
 
         if (exp.description) {
-            doc.text(exp.description, expX + 30, expY + 60, {
-                width: pageWidth - expX - margin * 3
+            doc.text(exp.description, rightX + 30, rightY + 60, {
+                width: pageWidth - rightX - margin * 3
             });
         }
 
-        expY += 100; // Space for next experience item
+        rightY += 100;
     });
 }
 
