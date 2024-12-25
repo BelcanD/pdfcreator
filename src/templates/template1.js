@@ -1,33 +1,33 @@
 const PDFDocument = require('pdfkit');
 
 function generateTemplate1(doc, cv_data) {
+    // Constants for text formatting and spacing
+    const maxLineWidth = 30; // Maximum characters per line
+    const lineHeight = 20; // Height between lines
+    const sectionSpacing = 30; // Space between sections
+    const itemSpacing = 15; // Space between items in a section
+
     // Заголовок
-    doc.fillColor('#070c17').rect(200, 30, 615, 100).fill(); // Фон заголовка
+    doc.fillColor('#070c17').rect(200, 30, 615, 100).fill();
     doc.moveDown(1);
 
     // Личная информация
-    doc.fillColor('#fff'); // Цвет текста
+    doc.fillColor('#fff');
     const name = cv_data.personal.full_name;
-    const yPosition = 80; // Вертикальная позиция (сдвинуто на 30 пикселей вниз)
-    const xPosition = 280; // Фиксированная горизонтальная позиция (сдвинуто на 30 пикселей вправо)
+    const yPosition = 80;
+    const xPosition = 280;
 
-    // Установка размера шрифта
-    doc.fontSize(30); // Размер шрифта для имени
-    doc.text(name, xPosition, yPosition); // Полное имя на фоне заголовка
-    doc.moveDown(2); // Добавляем отступ после имени
+    doc.fontSize(30)
+       .text(name, xPosition, yPosition);
 
     // Левый столбец
     doc.moveTo(0, 0)
         .lineTo(0, 720)
-        .bezierCurveTo(50, 680, 100, 700, 200, 760) // Плавная кривая
+        .bezierCurveTo(50, 680, 100, 700, 200, 760)
         .lineTo(200, 760)
         .lineTo(200, 0)
         .closePath()
-        .fill('#070c17'); // Заполнение цветом
-
-    // Constants for text formatting
-    const maxLineWidth = 30; // Maximum characters per line
-    const lineHeight = 20; // Height between lines
+        .fill('#070c17');
 
     // Helper function to format text with line breaks
     function formatLongText(text, maxWidth) {
@@ -63,39 +63,42 @@ function generateTemplate1(doc, cv_data) {
     const contactY = 150;
 
     // Заголовок блока "Contact"
-    doc.fillColor('#fff');
-    doc.fontSize(24).text('Contact', contactX, contactY);
+    doc.fillColor('#fff')
+       .fontSize(24)
+       .text('Contact', contactX, contactY);
 
     // Контактная информация
     let currentY = contactY + 40;
     renderFormattedText(cv_data.personal.email, contactX, currentY, 12, '#fff');
-    currentY += lineHeight + 10;
+    currentY += lineHeight + itemSpacing;
     renderFormattedText(cv_data.personal.phone, contactX, currentY, 12, '#fff');
-    currentY += lineHeight + 10;
+    currentY += lineHeight + itemSpacing;
     renderFormattedText(cv_data.personal.location, contactX, currentY, 12, '#fff');
-    currentY += lineHeight + 20;
+    currentY += lineHeight + sectionSpacing;
 
     // Блок с навыками
-    doc.fillColor('#fff');
-    doc.fontSize(24).text('Skills', contactX, currentY);
+    doc.fillColor('#fff')
+       .fontSize(24)
+       .text('Skills', contactX, currentY);
     currentY += 40;
 
     // Навыки
     cv_data.skills.forEach(skill => {
         renderFormattedText(skill, contactX, currentY, 12, '#fff');
-        currentY += lineHeight;
+        currentY += lineHeight + itemSpacing;
     });
-    currentY += 20;
+    currentY += sectionSpacing - itemSpacing; // Компенсируем последний itemSpacing
 
     // Блок с языками
-    doc.fillColor('#fff');
-    doc.fontSize(24).text('Languages', contactX, currentY);
+    doc.fillColor('#fff')
+       .fontSize(24)
+       .text('Languages', contactX, currentY);
     currentY += 40;
 
     // Языки
     cv_data.languages.forEach(lang => {
         renderFormattedText(`${lang.name} - ${lang.level}`, contactX, currentY, 12, '#fff');
-        currentY += lineHeight;
+        currentY += lineHeight + itemSpacing;
     });
 
     // Правая часть
@@ -103,8 +106,9 @@ function generateTemplate1(doc, cv_data) {
     let rightY = 150;
 
     // Блок с образованием
-    doc.fillColor('#070c17');
-    doc.fontSize(24).text('Education', rightX, rightY);
+    doc.fillColor('#070c17')
+       .fontSize(24)
+       .text('Education', rightX, rightY);
     rightY += 40;
 
     // Образование
@@ -118,16 +122,16 @@ function generateTemplate1(doc, cv_data) {
            .text(edu.graduation_year, rightX + 400, rightY);
 
         // Institution
-        const institutionY = rightY + degreeHeight + lineHeight;
+        const institutionY = rightY + degreeHeight + itemSpacing;
         const institutionHeight = renderFormattedText(edu.institution, rightX, institutionY, 12, '#070c17');
         
-        rightY = institutionY + institutionHeight + lineHeight;
+        rightY = institutionY + institutionHeight + sectionSpacing;
     });
 
     // Блок с опытом работы
-    rightY += 20;
-    doc.fillColor('#070c17');
-    doc.fontSize(24).text('Experience', rightX, rightY);
+    doc.fillColor('#070c17')
+       .fontSize(24)
+       .text('Experience', rightX, rightY);
     rightY += 40;
 
     // Опыт работы
@@ -142,16 +146,16 @@ function generateTemplate1(doc, cv_data) {
            .text(dateText, rightX + 400, rightY);
 
         // Company
-        const companyY = rightY + positionHeight + lineHeight;
+        const companyY = rightY + positionHeight + itemSpacing;
         const companyHeight = renderFormattedText(exp.company, rightX, companyY, 12, '#070c17');
 
         // Description
         if (exp.description) {
-            const descriptionY = companyY + companyHeight + lineHeight;
+            const descriptionY = companyY + companyHeight + itemSpacing;
             const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12, '#070c17');
-            rightY = descriptionY + descriptionHeight + lineHeight;
+            rightY = descriptionY + descriptionHeight + sectionSpacing;
         } else {
-            rightY = companyY + companyHeight + lineHeight;
+            rightY = companyY + companyHeight + sectionSpacing;
         }
     });
 }
