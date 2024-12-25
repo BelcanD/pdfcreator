@@ -1,32 +1,32 @@
 const PDFDocument = require('pdfkit');
 
-function generateTemplate4(doc, cv_data) {
-    // Background color for the right section
-    doc.fillColor('#4A5D5A').rect(400, 0, 415, 200).fill();
+function generateTemplate2(doc, cv_data) {
+    // Left section (contact info and photo area) - made thinner
+    doc.fillColor('#F2E8E4').rect(0, 0, 200, 842).fill();
 
-    // Left section (contact info and photo area)
-    doc.fillColor('#F2E8E4').rect(0, 0, 400, 842).fill();
+    // Right section - made wider
+    doc.fillColor('#4A5D5A').rect(200, 0, 615, 100).fill();
 
     // Name and title
     doc.fillColor('#FFFFFF')
        .fontSize(32)
-       .text(cv_data.personal.full_name, 420, 40);
+       .text(cv_data.personal.full_name, 280, 40);
     
     doc.fillColor('#FFFFFF')
        .fontSize(16)
-       .text(cv_data.personal.title, 420, 80);
+       .text(cv_data.personal.title, 280, 80);
 
     // Description
     doc.fillColor('#FFFFFF')
        .fontSize(12)
-       .text(cv_data.personal.description, 420, 120, {
-           width: 380,
+       .text(cv_data.personal.description, 280, 120, {
+           width: 500,
            align: 'left'
        });
 
     // Contact Information (Left side)
-    const contactX = 40;
-    const contactY = 220;
+    const contactX = 20;
+    const contactY = 120;
 
     // Phone
     doc.fillColor('#333333')
@@ -42,7 +42,7 @@ function generateTemplate4(doc, cv_data) {
     doc.fillColor('#333333')
        .fontSize(12)
        .text(cv_data.personal.location, contactX, contactY + 60, {
-           width: 300
+           width: 160
        });
 
     // Skills Section
@@ -50,7 +50,12 @@ function generateTemplate4(doc, cv_data) {
        .fontSize(20)
        .text('SKILLS', contactX, contactY + 120);
 
-    let currentY = contactY + 160;
+    // Separator line under SKILLS
+    doc.moveTo(contactX, contactY + 150)
+       .lineTo(180, contactY + 150)
+       .stroke('#333333');
+
+    let currentY = contactY + 170;
     cv_data.skills.forEach(skill => {
         doc.fillColor('#333333')
            .fontSize(12)
@@ -63,7 +68,12 @@ function generateTemplate4(doc, cv_data) {
        .fontSize(20)
        .text('LANGUAGES', contactX, currentY + 20);
 
-    currentY += 60;
+    // Separator line under LANGUAGES
+    doc.moveTo(contactX, currentY + 50)
+       .lineTo(180, currentY + 50)
+       .stroke('#333333');
+
+    currentY += 70;
     cv_data.languages.forEach(lang => {
         doc.fillColor('#333333')
            .fontSize(12)
@@ -71,15 +81,21 @@ function generateTemplate4(doc, cv_data) {
         currentY += 25;
     });
 
-    // Education Section (Right side)
-    let rightX = 420;
-    let rightY = 220;
+    // Right side content
+    let rightX = 280;
+    let rightY = 180;
 
+    // Education Section
     doc.fillColor('#333333')
        .fontSize(20)
        .text('EDUCATION', rightX, rightY);
 
-    rightY += 40;
+    // Separator line under EDUCATION
+    doc.moveTo(rightX, rightY + 30)
+       .lineTo(780, rightY + 30)
+       .stroke('#333333');
+
+    rightY += 50;
     cv_data.education.forEach(edu => {
         doc.fillColor('#333333')
            .fontSize(16)
@@ -87,7 +103,7 @@ function generateTemplate4(doc, cv_data) {
         
         doc.fillColor('#4A5D5A')
            .fontSize(14)
-           .text(edu.graduation_year, rightX + 320, rightY, {
+           .text(edu.graduation_year, rightX + 420, rightY, {
                align: 'right'
            });
 
@@ -103,7 +119,12 @@ function generateTemplate4(doc, cv_data) {
        .fontSize(20)
        .text('EXPERIENCE', rightX, rightY);
 
-    rightY += 40;
+    // Separator line under EXPERIENCE
+    doc.moveTo(rightX, rightY + 30)
+       .lineTo(780, rightY + 30)
+       .stroke('#333333');
+
+    rightY += 50;
     cv_data.experience.forEach(exp => {
         doc.fillColor('#333333')
            .fontSize(16)
@@ -111,7 +132,7 @@ function generateTemplate4(doc, cv_data) {
 
         doc.fillColor('#4A5D5A')
            .fontSize(14)
-           .text(exp.start_date, rightX + 320, rightY, {
+           .text(exp.start_date, rightX + 420, rightY, {
                align: 'right'
            });
 
@@ -121,11 +142,11 @@ function generateTemplate4(doc, cv_data) {
 
         doc.fontSize(12)
            .text(exp.description, rightX, rightY + 50, {
-               width: 380
+               width: 500
            });
 
         rightY += 100;
     });
 }
 
-module.exports = generateTemplate4; 
+module.exports = generateTemplate2; 
