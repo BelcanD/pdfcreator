@@ -78,7 +78,7 @@ function generateTemplate2(doc, cv_data) {
     // Right side content starts right after the green header
     let rightX = 240;
     let rightY = 120;
-    const dateX = 600; // Fixed position for dates
+    const dateX = 400; // Moved dates closer
 
     // Education Section
     doc.fillColor('#333333')
@@ -101,7 +101,7 @@ function generateTemplate2(doc, cv_data) {
                width: 320 // Limit width to prevent overlap with date
            });
         
-        doc.fillColor('#0066cc')
+        doc.fillColor('#333333') // Changed date color to black
            .fontSize(14)
            .text(edu.graduation_year, dateX, rightY);
 
@@ -133,7 +133,7 @@ function generateTemplate2(doc, cv_data) {
                width: 320 // Limit width to prevent overlap with date
            });
 
-        doc.fillColor('#0066cc')
+        doc.fillColor('#333333') // Changed date color to black
            .fontSize(14)
            .text(exp.start_date, dateX, rightY);
 
