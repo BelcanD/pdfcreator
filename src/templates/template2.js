@@ -78,14 +78,8 @@ function generateTemplate2(doc, cv_data) {
     // Right side content starts right after the green header
     let rightX = 240;
     let rightY = 120;
-    const dateX = 550; // Adjusted date position
-    const maxLength = 30; // Maximum characters per line
-
-    // Helper function to truncate text
-    function truncateText(text, maxLen) {
-        if (text.length <= maxLen) return text;
-        return text.substring(0, maxLen - 3) + '...';
-    }
+    const dateX = 500; // Moved dates more to the left
+    const titleWidth = 240; // Width for titles before date
 
     // Education Section
     doc.fillColor('#333333')
@@ -99,13 +93,11 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.education.forEach(edu => {
-        const degreeText = truncateText(`${edu.degree} in ${edu.field}`, maxLength);
-        
         // Degree title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(degreeText, rightX, rightY, {
-               width: 280,
+           .text(`${edu.degree} in ${edu.field}`, rightX, rightY, {
+               width: titleWidth,
                align: 'left'
            });
 
@@ -115,10 +107,9 @@ function generateTemplate2(doc, cv_data) {
            .text(edu.graduation_year, dateX, rightY);
 
         // Institution on next line
-        const institutionText = truncateText(edu.institution, maxLength);
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(institutionText, rightX, rightY + 25, {
+           .text(edu.institution, rightX, rightY + 25, {
                width: 280,
                align: 'left'
            });
@@ -139,13 +130,11 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.experience.forEach(exp => {
-        const positionText = truncateText(exp.position, maxLength);
-        
         // Position title
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(positionText, rightX, rightY, {
-               width: 280,
+           .text(exp.position, rightX, rightY, {
+               width: titleWidth,
                align: 'left'
            });
 
@@ -155,10 +144,9 @@ function generateTemplate2(doc, cv_data) {
            .text(exp.start_date, dateX, rightY);
 
         // Company name
-        const companyText = truncateText(exp.company, maxLength);
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(companyText, rightX, rightY + 25, {
+           .text(exp.company, rightX, rightY + 25, {
                width: 280,
                align: 'left'
            });
