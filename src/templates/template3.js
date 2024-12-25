@@ -18,7 +18,7 @@ function generateTemplate3(doc, cv_data) {
     // Contact Information with beige tiles
     const contactY = margin + 60;
     const contactHeight = 25;
-    const contactWidth = 200;
+    const contactWidth = 250;
     const contactX = (pageWidth - contactWidth) / 2;
 
     // Phone tile
@@ -40,13 +40,13 @@ function generateTemplate3(doc, cv_data) {
 
     const contentStartY = contactY + 100;
     const leftX = margin;
-    const rightX = pageWidth / 2 + margin;
+    const rightX = pageWidth / 2 + margin / 2;
     let leftY = contentStartY;
     let rightY = contentStartY;
 
     // Left Column
     // Skills Section with blue frame
-    doc.rect(leftX - 10, leftY - 10, leftColumnWidth + 20, 100)
+    doc.rect(leftX - 10, leftY - 10, leftColumnWidth + 20, 120)
        .lineWidth(2)
        .stroke(mainBlue);
 
@@ -55,17 +55,20 @@ function generateTemplate3(doc, cv_data) {
        .fillColor(mainBlue)
        .text('SKILLS', leftX, leftY);
 
-    doc.font('Helvetica')
-       .fontSize(12)
-       .fillColor('#333')
-       .text(cv_data.skills || 'Technical skills include: JavaScript, Node.js, React, Python', 
-             leftX, leftY + 25, {
-                 width: leftColumnWidth,
-                 align: 'left'
-             });
+    leftY += 25;
+    // Display skills as a list
+    if (Array.isArray(cv_data.skills)) {
+        cv_data.skills.forEach(skill => {
+            doc.font('Helvetica')
+               .fontSize(12)
+               .fillColor('#333')
+               .text(`• ${skill}`, leftX + 5, leftY);
+            leftY += 20;
+        });
+    }
 
     // Education Section
-    leftY += 120;
+    leftY = contentStartY + 140;
     doc.font('Helvetica-Bold')
        .fontSize(16)
        .fillColor(mainBlue)
@@ -76,20 +79,30 @@ function generateTemplate3(doc, cv_data) {
         doc.font('Helvetica-Bold')
            .fontSize(12)
            .fillColor('#333')
-           .text(`${edu.degree} in ${edu.field}`, leftX, leftY);
+           .text(`${edu.degree}`, leftX, leftY);
+        
+        if (edu.field) {
+            doc.font('Helvetica')
+               .fontSize(12)
+               .text(`in ${edu.field}`, leftX, leftY + 15);
+            leftY += 15;
+        }
         
         doc.font('Helvetica')
            .fontSize(12)
-           .text(edu.institution, leftX, leftY + 20)
-           .text(`Graduation: ${edu.graduation_year}`, leftX, leftY + 40);
+           .text(edu.institution, leftX, leftY + 15)
+           .text(`Graduation: ${edu.graduation_year}`, leftX, leftY + 30);
         
         if (edu.description) {
-            doc.text(edu.description, leftX, leftY + 60, {
+            doc.text(edu.description, leftX, leftY + 45, {
                 width: leftColumnWidth
             });
+            leftY += 60;
+        } else {
+            leftY += 45;
         }
         
-        leftY += 100;
+        leftY += 20;
     });
 
     // Languages Section
@@ -114,31 +127,36 @@ function generateTemplate3(doc, cv_data) {
        .text('EXPERIENCES', rightX, rightY);
 
     rightY += 40;
+    const timelineX = rightX + 10;
+    const contentX = rightX + 30;
+    const contentWidth = pageWidth - contentX - margin;
+
     cv_data.experience.forEach((exp, index) => {
         // Timeline dot
-        doc.circle(rightX + 10, rightY + 10, 5)
+        doc.circle(timelineX, rightY + 10, 5)
            .fillAndStroke(mainBlue);
 
-        // Vertical line for all items
-        doc.moveTo(rightX + 10, rightY + 15)
-           .lineTo(rightX + 10, rightY + 80)
+        // Vertical line
+        doc.moveTo(timelineX, rightY + 15)
+           .lineTo(timelineX, rightY + 80)
            .stroke(mainBlue);
 
         // Experience details
         doc.font('Helvetica-Bold')
            .fontSize(14)
            .fillColor(mainBlue)
-           .text(exp.company.toUpperCase(), rightX + 30, rightY);
+           .text(exp.company.toUpperCase(), contentX, rightY);
 
         doc.font('Helvetica')
            .fontSize(12)
            .fillColor('#333')
-           .text(`Role: ${exp.position}`, rightX + 30, rightY + 20)
-           .text(`Period: ${exp.start_date} to ${exp.end_date}`, rightX + 30, rightY + 40);
+           .text(`Role: ${exp.position}`, contentX, rightY + 20)
+           .text(`Period: ${exp.start_date} to ${exp.end_date}`, contentX, rightY + 35);
 
         if (exp.description) {
-            doc.text(exp.description, rightX + 30, rightY + 60, {
-                width: pageWidth - rightX - margin * 3
+            doc.text(exp.description, contentX, rightY + 50, {
+                width: contentWidth,
+                align: 'left'
             });
         }
 
