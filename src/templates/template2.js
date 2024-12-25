@@ -78,15 +78,36 @@ function generateTemplate2(doc, cv_data) {
     // Right side content starts right after the green header
     let rightX = 240;
     let rightY = 120;
-    const dateX = 500; // Moved dates more to the left
-    const titleWidth = 240; // Width for titles before date
-    const standardGap = 25; // Standard gap between elements
+    const dateX = 500;
+    const maxLineWidth = 30; // Maximum characters per line
+    const lineHeight = 20; // Height between lines
 
-    // Helper function to calculate text height
-    function calculateTextHeight(text, width, fontSize) {
-        const avgCharPerLine = width / (fontSize * 0.5);
-        const lines = Math.ceil(text.length / avgCharPerLine);
-        return lines * (fontSize + 2); // fontSize + 2 for line spacing
+    // Helper function to format text with line breaks
+    function formatLongText(text, maxWidth) {
+        const words = text.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            if ((currentLine + ' ' + words[i]).length <= maxWidth) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    // Helper function to render text with line breaks
+    function renderFormattedText(text, x, y, fontSize) {
+        const lines = formatLongText(text, maxLineWidth);
+        doc.fontSize(fontSize);
+        lines.forEach((line, index) => {
+            doc.text(line, x, y + index * lineHeight);
+        });
+        return lines.length * lineHeight;
     }
 
     // Education Section
@@ -101,33 +122,20 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.education.forEach(edu => {
+        // Degree and field
         const degreeText = `${edu.degree} in ${edu.field}`;
-        
-        // Calculate degree text height
-        const degreeHeight = calculateTextHeight(degreeText, titleWidth, 16);
-        
-        // Degree title
-        doc.fillColor('#333333')
-           .fontSize(16)
-           .text(degreeText, rightX, rightY, {
-               width: titleWidth,
-               align: 'left'
-           });
+        const degreeHeight = renderFormattedText(degreeText, rightX, rightY, 16);
 
         // Year on the right
         doc.fillColor('#333333')
            .fontSize(14)
            .text(edu.graduation_year, dateX, rightY);
 
-        // Institution on next line (after degree text)
-        doc.fillColor('#333333')
-           .fontSize(14)
-           .text(edu.institution, rightX, rightY + degreeHeight + 10, {
-               width: 280,
-               align: 'left'
-           });
+        // Institution with proper spacing
+        const institutionY = rightY + degreeHeight + lineHeight;
+        const institutionHeight = renderFormattedText(edu.institution, rightX, institutionY, 14);
 
-        rightY += degreeHeight + standardGap + 20; // Total height + standard gap + institution height
+        rightY = institutionY + institutionHeight + lineHeight;
     });
 
     // Experience Section
@@ -143,15 +151,8 @@ function generateTemplate2(doc, cv_data) {
 
     rightY += 40;
     cv_data.experience.forEach(exp => {
-        const positionHeight = calculateTextHeight(exp.position, titleWidth, 16);
-        
         // Position title
-        doc.fillColor('#333333')
-           .fontSize(16)
-           .text(exp.position, rightX, rightY, {
-               width: titleWidth,
-               align: 'left'
-           });
+        const positionHeight = renderFormattedText(exp.position, rightX, rightY, 16);
 
         // Date range on the right
         const dateText = exp.end_date ? `${exp.start_date} - ${exp.end_date}` : exp.start_date;
@@ -159,25 +160,17 @@ function generateTemplate2(doc, cv_data) {
            .fontSize(14)
            .text(dateText, dateX, rightY);
 
-        // Company name (after position text)
-        doc.fillColor('#333333')
-           .fontSize(14)
-           .text(exp.company, rightX, rightY + positionHeight + 10, {
-               width: 280,
-               align: 'left'
-           });
+        // Company name with proper spacing
+        const companyY = rightY + positionHeight + lineHeight;
+        const companyHeight = renderFormattedText(exp.company, rightX, companyY, 14);
 
-        // Description (after company name)
+        // Description with proper spacing
         if (exp.description) {
-            doc.fontSize(12)
-               .text(exp.description, rightX, rightY + positionHeight + standardGap + 20, {
-                   width: 460,
-                   align: 'left',
-                   lineGap: 2
-               });
-            rightY += positionHeight + standardGap + 70; // Total height + gaps + description
+            const descriptionY = companyY + companyHeight + lineHeight;
+            const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12);
+            rightY = descriptionY + descriptionHeight + lineHeight;
         } else {
-            rightY += positionHeight + standardGap + 30; // Total height + gap + company only
+            rightY = companyY + companyHeight + lineHeight;
         }
     });
 }

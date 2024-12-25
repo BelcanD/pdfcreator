@@ -25,98 +25,134 @@ function generateTemplate1(doc, cv_data) {
         .closePath()
         .fill('#070c17'); // Заполнение цветом
 
+    // Constants for text formatting
+    const maxLineWidth = 30; // Maximum characters per line
+    const lineHeight = 20; // Height between lines
+
+    // Helper function to format text with line breaks
+    function formatLongText(text, maxWidth) {
+        const words = text.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            if ((currentLine + ' ' + words[i]).length <= maxWidth) {
+                currentLine += ' ' + words[i];
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    // Helper function to render text with line breaks
+    function renderFormattedText(text, x, y, fontSize, color = null) {
+        if (color) doc.fillColor(color);
+        const lines = formatLongText(text, maxLineWidth);
+        doc.fontSize(fontSize);
+        lines.forEach((line, index) => {
+            doc.text(line, x, y + index * lineHeight);
+        });
+        return lines.length * lineHeight;
+    }
+
     // Блок с контактной информацией
-    const contactX = 40; // Позиция по оси X (сдвинуто на 30 пикселей)
-    const contactY = 150; // Позиция по оси Y
+    const contactX = 40;
+    const contactY = 150;
 
     // Заголовок блока "Contact"
-    doc.fillColor('#fff'); // Цвет текста
-    doc.fontSize(24).text('Contact', contactX, contactY); // Заголовок (размер шрифта 24)
-    doc.moveDown(1); // Добавляем отступ после заголовка
+    doc.fillColor('#fff');
+    doc.fontSize(24).text('Contact', contactX, contactY);
 
     // Контактная информация
-    doc.fontSize(12); // Размер шрифта для контактной информации
-    const spacing = 20; // Устанавливаем промежуток между контактами
-    doc.text(` ${cv_data.personal.email}`, contactX, contactY + 40); // Email
-    doc.moveDown(1); // Добавляем отступ после Email
-    doc.text(` ${cv_data.personal.phone}`, contactX, contactY + 40 + spacing); // Телефон
-    doc.moveDown(1); // Добавляем отступ после Телефона
-    doc.text(` ${cv_data.personal.location}`, contactX, contactY + 40 + spacing * 2); // Местоположение
-    doc.moveDown(2); // Добавляем отступ перед блоком навыков
+    let currentY = contactY + 40;
+    renderFormattedText(cv_data.personal.email, contactX, currentY, 12, '#fff');
+    currentY += lineHeight + 10;
+    renderFormattedText(cv_data.personal.phone, contactX, currentY, 12, '#fff');
+    currentY += lineHeight + 10;
+    renderFormattedText(cv_data.personal.location, contactX, currentY, 12, '#fff');
+    currentY += lineHeight + 20;
 
     // Блок с навыками
-    const skillsX = 40; // Позиция по оси X для навыков (сдвинуто на 30 пикселей)
-    const skillsY = contactY + 100; // Позиция по оси Y (отступ от контактов)
-
-    // Заголовок блока "Skills"
-    doc.fillColor('#fff'); // Цвет текста
-    doc.fontSize(24).text('Skills', skillsX, skillsY); // Заголовок (размер шрифта 24)
-    doc.moveDown(1); // Добавляем отступ после заголовка
+    doc.fillColor('#fff');
+    doc.fontSize(24).text('Skills', contactX, currentY);
+    currentY += 40;
 
     // Навыки
-    doc.fontSize(12); // Размер шрифта для информации о навыках
-    let lastSkillY; // Переменная для хранения позиции последнего элемента навыков
-    const skillSpacing = 10; // Устанавливаем промежуток между навыками
-    cv_data.skills.forEach((skill, index) => {
-        const skillY = skillsY + 40 + index * (20 + skillSpacing); // Позиция для каждого элемента навыков
-        doc.text(skill, skillsX, skillY);
-        lastSkillY = skillY; // Обновляем позицию последнего элемента
+    cv_data.skills.forEach(skill => {
+        renderFormattedText(skill, contactX, currentY, 12, '#fff');
+        currentY += lineHeight;
     });
-    doc.moveDown(2); // Добавляем отступ перед блоком образования
-
-    // Блок с образованием
-    const educationX = 250; // Позиция по оси X для образования (сдвинуто на 30 пикселей)
-    const educationY = 150; // Позиция по оси Y (на том же уровне, что и контакты)
-
-    // Заголовок блока "Education"
-    doc.fillColor('#070c17'); // Цвет текста
-    doc.fontSize(24).text('Education', educationX, educationY); // Заголовок (размер шрифта 24)
-    doc.moveDown(1); // Добавляем отступ после заголовка
-
-    // Образование
-    doc.fontSize(12); // Размер шрифта для информации об образовании
-    const educationSpacing = 10; // Устанавливаем промежуток между образованиями
-    cv_data.education.forEach((edu, index) => {
-        const eduY = educationY + 40 + index * (20 + educationSpacing); // Позиция для каждого элемента образования
-        doc.text(`${edu.degree} in ${edu.field}, ${edu.institution} (${edu.graduation_year})`, educationX, eduY);
-    });
-    doc.moveDown(2); // Добавляем отступ перед блоком опыта работы
-
-    // Блок с опытом работы
-    const experienceX = 250; // Позиция по оси X для опыта работы (сдвинуто на 30 пикселей)
-    const experienceY = educationY + 100; // Позиция по оси Y (отступ от образования)
-
-    // Заголовок блока "Experience"
-    doc.fillColor('#070c17'); // Цвет текста
-    doc.fontSize(24).text('Experience', experienceX, experienceY); // Заголовок (размер шрифта 24)
-    doc.moveDown(1); // Добавляем отступ после заголовка
-
-    // Опыт работы
-    doc.fontSize(12); // Размер шрифта для информации об опыте работы
-    const experienceSpacing = 10; // Устанавливаем промежуток между опытом
-    cv_data.experience.forEach((exp, index) => {
-        const expY = experienceY + 40 + index * (20 + experienceSpacing); // Позиция для каждого элемента опыта работы
-        doc.text(`${exp.position} at ${exp.company} (${exp.start_date} - ${exp.end_date})`, experienceX, expY);
-        doc.text(`${exp.description}`, experienceX, expY + 15); // Описание
-        doc.moveDown(1); // Добавляем отступ после каждого опыта работы
-    });
-    doc.moveDown(2); // Добавляем отступ перед блоком языков
+    currentY += 20;
 
     // Блок с языками
-    const languagesX = 40; // Позиция по оси X для языков (сдвинуто на 30 пикселей)
-    const languagesY = lastSkillY + 40; // Позиция по оси Y (отступ от последнего элемента навыков)
-
-    // Заголовок блока "Languages"
-    doc.fillColor('#fff'); // Цвет текста
-    doc.fontSize(24).text('Languages', languagesX, languagesY); // Заголовок (размер шрифта 24)
-    doc.moveDown(1); // Добавляем отступ после заголовка
+    doc.fillColor('#fff');
+    doc.fontSize(24).text('Languages', contactX, currentY);
+    currentY += 40;
 
     // Языки
-    doc.fontSize(12); // Размер шрифта для информации о языках
-    const languageSpacing = 10; // Устанавливаем промежуток между языками
-    cv_data.languages.forEach((lang, index) => {
-        const langY = languagesY + 40 + index * (20 + languageSpacing); // Позиция для каждого элемента языков
-        doc.text(`${lang.name} - ${lang.level}`, languagesX, langY);
+    cv_data.languages.forEach(lang => {
+        renderFormattedText(`${lang.name} - ${lang.level}`, contactX, currentY, 12, '#fff');
+        currentY += lineHeight;
+    });
+
+    // Правая часть
+    const rightX = 250;
+    let rightY = 150;
+
+    // Блок с образованием
+    doc.fillColor('#070c17');
+    doc.fontSize(24).text('Education', rightX, rightY);
+    rightY += 40;
+
+    // Образование
+    cv_data.education.forEach(edu => {
+        const degreeText = `${edu.degree} in ${edu.field}`;
+        const degreeHeight = renderFormattedText(degreeText, rightX, rightY, 12, '#070c17');
+        
+        // Year on the right
+        doc.fillColor('#070c17')
+           .fontSize(12)
+           .text(edu.graduation_year, rightX + 400, rightY);
+
+        // Institution
+        const institutionY = rightY + degreeHeight + lineHeight;
+        const institutionHeight = renderFormattedText(edu.institution, rightX, institutionY, 12, '#070c17');
+        
+        rightY = institutionY + institutionHeight + lineHeight;
+    });
+
+    // Блок с опытом работы
+    rightY += 20;
+    doc.fillColor('#070c17');
+    doc.fontSize(24).text('Experience', rightX, rightY);
+    rightY += 40;
+
+    // Опыт работы
+    cv_data.experience.forEach(exp => {
+        // Position
+        const positionHeight = renderFormattedText(exp.position, rightX, rightY, 12, '#070c17');
+        
+        // Date range on the right
+        const dateText = exp.end_date ? `${exp.start_date} - ${exp.end_date}` : exp.start_date;
+        doc.fillColor('#070c17')
+           .fontSize(12)
+           .text(dateText, rightX + 400, rightY);
+
+        // Company
+        const companyY = rightY + positionHeight + lineHeight;
+        const companyHeight = renderFormattedText(exp.company, rightX, companyY, 12, '#070c17');
+
+        // Description
+        if (exp.description) {
+            const descriptionY = companyY + companyHeight + lineHeight;
+            const descriptionHeight = renderFormattedText(exp.description, rightX, descriptionY, 12, '#070c17');
+            rightY = descriptionY + descriptionHeight + lineHeight;
+        } else {
+            rightY = companyY + companyHeight + lineHeight;
+        }
     });
 }
 
