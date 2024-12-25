@@ -28,51 +28,51 @@ function generateTemplate2(doc, cv_data) {
     // Email
     doc.fillColor('#333333')
        .fontSize(12)
-       .text(cv_data.personal.email, contactX, contactY + 30);
+       .text(cv_data.personal.email, contactX, contactY + 25);
 
     // Address
     doc.fillColor('#333333')
        .fontSize(12)
-       .text(cv_data.personal.location, contactX, contactY + 60, {
+       .text(cv_data.personal.location, contactX, contactY + 50, {
            width: 160
        });
 
     // Skills Section (Left side)
-    let leftY = contactY + 120;
+    let leftY = contactY + 100;
     doc.fillColor('#333333')
        .fontSize(20)
        .text('SKILLS', contactX, leftY);
 
     // Separator line under SKILLS
-    doc.moveTo(contactX, leftY + 30)
-       .lineTo(180, leftY + 30)
+    doc.moveTo(contactX, leftY + 25)
+       .lineTo(180, leftY + 25)
        .stroke('#333333');
 
-    leftY += 50;
+    leftY += 40;
     cv_data.skills.forEach(skill => {
         doc.fillColor('#333333')
            .fontSize(12)
            .text('*  ' + skill, contactX, leftY);
-        leftY += 25;
+        leftY += 20;
     });
 
     // Languages Section (Left side)
-    leftY += 20;
+    leftY += 15;
     doc.fillColor('#333333')
        .fontSize(20)
        .text('LANGUAGES', contactX, leftY);
 
     // Separator line under LANGUAGES
-    doc.moveTo(contactX, leftY + 30)
-       .lineTo(180, leftY + 30)
+    doc.moveTo(contactX, leftY + 25)
+       .lineTo(180, leftY + 25)
        .stroke('#333333');
 
-    leftY += 50;
+    leftY += 40;
     cv_data.languages.forEach(lang => {
         doc.fillColor('#333333')
            .fontSize(12)
            .text(`*  ${lang.name} - ${lang.level}`, contactX, leftY);
-        leftY += 25;
+        leftY += 20;
     });
 
     // Right side content starts right after the green header
@@ -85,34 +85,29 @@ function generateTemplate2(doc, cv_data) {
        .text('EDUCATION', rightX, rightY);
 
     // Separator line under EDUCATION
-    doc.moveTo(rightX, rightY + 30)
-       .lineTo(750, rightY + 30)
+    doc.moveTo(rightX, rightY + 25)
+       .lineTo(750, rightY + 25)
        .stroke('#333333');
 
-    rightY += 50;
+    rightY += 40;
     cv_data.education.forEach(edu => {
-        // Degree title
+        const degreeText = `${edu.degree} in ${edu.field}`;
+        
+        // Degree title and year on the same line
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(`${edu.degree} in ${edu.field}`, rightX, rightY, {
-               width: 350,
-               continued: false
-           });
+           .text(degreeText, rightX, rightY);
         
-        // Year on the right
         doc.fillColor('#0066cc')
            .fontSize(14)
-           .text(edu.graduation_year, rightX + 380, rightY, {
-               align: 'right',
-               width: 80
-           });
+           .text(edu.graduation_year, 700, rightY);
 
         // Institution on next line
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(edu.institution, rightX, rightY + 25);
+           .text(edu.institution, rightX, rightY + 20);
 
-        rightY += 60;
+        rightY += 45;
     });
 
     // Experience Section
@@ -122,40 +117,37 @@ function generateTemplate2(doc, cv_data) {
        .text('EXPERIENCE', rightX, rightY);
 
     // Separator line under EXPERIENCE
-    doc.moveTo(rightX, rightY + 30)
-       .lineTo(750, rightY + 30)
+    doc.moveTo(rightX, rightY + 25)
+       .lineTo(750, rightY + 25)
        .stroke('#333333');
 
-    rightY += 50;
+    rightY += 40;
     cv_data.experience.forEach(exp => {
-        // Position title
+        // Position title and date on the same line
         doc.fillColor('#333333')
            .fontSize(16)
-           .text(`${exp.position}`, rightX, rightY, {
-               width: 350,
-               continued: false
-           });
+           .text(exp.position, rightX, rightY);
 
-        // Date on the right
         doc.fillColor('#0066cc')
            .fontSize(14)
-           .text(exp.start_date, rightX + 380, rightY, {
-               align: 'right',
-               width: 80
-           });
+           .text(exp.start_date, 700, rightY);
 
         // Company name
         doc.fillColor('#333333')
            .fontSize(14)
-           .text(exp.company, rightX, rightY + 25);
+           .text(exp.company, rightX, rightY + 20);
 
         // Description
-        doc.fontSize(12)
-           .text(exp.description, rightX, rightY + 50, {
-               width: 460
-           });
-
-        rightY += 90;
+        if (exp.description) {
+            doc.fontSize(12)
+               .text(exp.description, rightX, rightY + 40, {
+                   width: 460,
+                   align: 'left'
+               });
+            rightY += 70;
+        } else {
+            rightY += 45;
+        }
     });
 }
 
