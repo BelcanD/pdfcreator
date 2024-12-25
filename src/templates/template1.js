@@ -120,6 +120,9 @@ function generateTemplate1(doc, cv_data) {
         doc.moveDown();
     });
 
+    // Добавляем дополнительный отступ между Education и Experience
+    doc.moveDown(2);
+
     // Блок с опытом работы
     doc.fillColor('#070c17')
        .fontSize(24)

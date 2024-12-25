@@ -133,8 +133,10 @@ function generateTemplate2(doc, cv_data) {
         doc.moveDown();
     });
 
+    // Добавляем дополнительный отступ между Education и Experience
+    doc.moveDown(2);
+
     // Experience Section
-    rightY += 10;
     doc.fillColor('#333333')
        .fontSize(20)
        .text('EXPERIENCE', rightX, rightY);
