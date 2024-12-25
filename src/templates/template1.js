@@ -126,7 +126,7 @@ function generateTemplate1(doc, cv_data) {
         // Year on the right
         doc.fillColor('#070c17')
            .fontSize(12)
-           .text(edu.graduation_year, rightX + 400, rightY);
+           .text(edu.graduation_year, rightX + 380, rightY);
 
         // Institution (with fixed spacing from the last line of degree)
         const institutionY = rightY + (degreeLines.length * lineHeight) + 5;
