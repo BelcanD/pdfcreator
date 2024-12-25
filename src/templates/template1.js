@@ -161,7 +161,7 @@ function generateTemplate1(doc, cv_data) {
         const dateText = exp.end_date ? `${exp.start_date} - ${exp.end_date}` : exp.start_date;
         doc.fillColor('#070c17')
            .fontSize(12)
-           .text(dateText, rightX + 350, rightY);
+           .text(dateText, rightX + 300, rightY);
 
         // Company (with fixed spacing from the last line of position)
         const companyY = rightY + (positionLines.length * lineHeight) + 5;
