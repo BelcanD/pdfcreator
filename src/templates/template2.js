@@ -86,7 +86,7 @@ function generateTemplate2(doc, cv_data) {
 
     // Separator line under EDUCATION
     doc.moveTo(rightX, rightY + 30)
-       .lineTo(780, rightY + 30)
+       .lineTo(750, rightY + 30)
        .stroke('#333333');
 
     rightY += 50;
@@ -95,14 +95,14 @@ function generateTemplate2(doc, cv_data) {
         doc.fillColor('#333333')
            .fontSize(16)
            .text(`${edu.degree} in ${edu.field}`, rightX, rightY, {
-               width: 400,
+               width: 350,
                continued: false
            });
         
         // Year on the right
         doc.fillColor('#0066cc')
            .fontSize(14)
-           .text(edu.graduation_year, rightX + 460, rightY, {
+           .text(edu.graduation_year, rightX + 380, rightY, {
                align: 'right',
                width: 80
            });
@@ -123,7 +123,7 @@ function generateTemplate2(doc, cv_data) {
 
     // Separator line under EXPERIENCE
     doc.moveTo(rightX, rightY + 30)
-       .lineTo(780, rightY + 30)
+       .lineTo(750, rightY + 30)
        .stroke('#333333');
 
     rightY += 50;
@@ -132,14 +132,14 @@ function generateTemplate2(doc, cv_data) {
         doc.fillColor('#333333')
            .fontSize(16)
            .text(`${exp.position}`, rightX, rightY, {
-               width: 400,
+               width: 350,
                continued: false
            });
 
         // Date on the right
         doc.fillColor('#0066cc')
            .fontSize(14)
-           .text(exp.start_date, rightX + 460, rightY, {
+           .text(exp.start_date, rightX + 380, rightY, {
                align: 'right',
                width: 80
            });
@@ -152,7 +152,7 @@ function generateTemplate2(doc, cv_data) {
         // Description
         doc.fontSize(12)
            .text(exp.description, rightX, rightY + 50, {
-               width: 520
+               width: 460
            });
 
         rightY += 90;
