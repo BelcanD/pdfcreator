@@ -19,8 +19,7 @@
     "express": "^4.17.1",
     "html-pdf": "^2.2.0",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.13.2",
-    "phantomjs-prebuilt": "^2.1.16"
+    "pg": "^8.13.2"
   },
   "repository": {
     "type": "git",
