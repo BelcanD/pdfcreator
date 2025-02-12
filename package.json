@@ -3,18 +3,31 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
-  "description": "",
+  "description": "Этот сервис позволяет создавать профессиональные PDF-резюме на основе предоставленных данных и шаблонов.",
   "dependencies": {
-    "body-parser": "^1.20.3",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "pdfkit": "^0.15.2"
-  }
+    "dotenv": "^8.2.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "html-pdf": "^2.2.0",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.2",
+    "phantomjs-prebuilt": "^2.1.16"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BelcanD/pdfcreator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BelcanD/pdfcreator/issues"
+  },
+  "homepage": "https://github.com/BelcanD/pdfcreator#readme"
 }

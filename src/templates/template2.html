@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: white;
+        }
+        
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            margin: 0;
+            background: white;
+            display: flex;
+            flex-direction: row;
+            position: relative;
+        }
+        
+        .left-panel {
+            width: 244px;
+            min-width: 244px;
+            background: #13101E;
+            color: white;
+            padding: 0;
+            min-height: 297mm;
+            position: relative;
+        }
+        
+        .right-panel {
+            flex: 1;
+            min-height: 297mm;
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header-section {
+            background: #13101E;
+            padding: 40px;
+            color: white;
+            margin-bottom: 40px;
+            width: 100%;
+        }
+        
+        .content-section-right {
+            padding: 0 40px;
+        }
+        
+        .avatar-container {
+            width: 212px;
+            height: 212px;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+        
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .content-section {
+            padding: 30px;
+        }
+        
+        .section-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: white;
+            font-weight: normal;
+        }
+        
+        .about-text {
+            color: #B7B7B7;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-bottom: 40px;
+            font-weight: normal;
+        }
+        
+        .contact-info {
+            color: #B7B7B7;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+        
+        .expertise-section {
+            margin-bottom: 40px;
+        }
+        
+        .skill-item {
+            color: #B7B7B7;
+            font-size: 15px;
+            margin-bottom: 12px;
+        }
+        
+        .right-panel h1 {
+            font-size: 36px;
+            margin: 0 0 5px 0;
+            color: white;
+            font-weight: normal;
+        }
+        
+        .position {
+            color: #B7B7B7;
+            font-size: 18px;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+        
+        .section-header {
+            font-size: 24px;
+            color: #333;
+            margin: 0 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #333;
+            font-weight: normal;
+        }
+        
+        .timeline-content {
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 40px;
+        }
+        
+        .timeline-content:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+        }
+
+        @media print {
+            .page {
+                page-break-after: always;
+            }
+            .left-panel {
+                height: 100%;
+                position: fixed;
+                left: 0;
+                top: 0;
+            }
+            .right-panel {
+                margin-left: 244px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="left-panel">
+            <div class="avatar-container">
+                <img src="markerphotomarker" alt="Profile Photo">
+            </div>
+            
+            <div class="content-section">
+                <div class="section-title">About me</div>
+                <div class="about-text">markeraboutMemarker</div>
+                
+                <div class="section-title">Contact</div>
+                <div class="contact-info">
+                    markeremailmarker<br>
+                    markerphonemarker<br>
+                    markerlocationmarker
+                </div>
+                
+                <div class="section-title">Expertise</div>
+                <div class="expertise-section">
+                    markerskillsmarker
+                </div>
+            </div>
+        </div>
+        
+        <div class="right-panel">
+            <div class="header-section">
+                <h1>markernamemarker</h1>
+                <div class="position">markerpositionmarker</div>
+            </div>
+            
+            <div class="content-section-right">
+                <div class="section-header">Education</div>
+                <div class="timeline-content">
+                    markereducationmarker
+                </div>
+                
+                <div class="section-header">Work Experience</div>
+                <div class="timeline-content">
+                    markerexperiencemarker
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
