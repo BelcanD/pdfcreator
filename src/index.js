@@ -121,7 +121,7 @@ app.post('/api/v1/generate', authenticateToken, async (req, res) => {
 
     } catch (error) {
         console.error('Error generating PDF:', error);
-        res.status(500).json({ 
+        return res.status(500).json({ 
             error: 'Internal Server Error', 
             message: 'Failed to generate PDF'
         });
