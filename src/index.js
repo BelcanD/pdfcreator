@@ -73,23 +73,13 @@ app.post('/api/v1/generate', authenticateToken, async (req, res) => {
         const html = generateHTML(cv_data, template_id);
 
         // Updated browser launch configuration
-        const options = process.env.AWS_LAMBDA_FUNCTION_VERSION
-            ? {
-                args: chromium.args,
-                defaultViewport: chromium.defaultViewport,
-                executablePath: await chromium.executablePath,
-                headless: chromium.headless,
-                ignoreHTTPSErrors: true,
-            }
-            : {
-                args: [],
-                executablePath: process.platform === 'win32'
-                    ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-                    : process.platform === 'linux'
-                    ? '/usr/bin/google-chrome'
-                    : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-                headless: true,
-            };
+        const options = {
+            args: chromium.args,
+            defaultViewport: chromium.defaultViewport,
+            executablePath: await chromium.executablePath,
+            headless: chromium.headless,
+            ignoreHTTPSErrors: true,
+        };
 
         const browser = await puppeteer.launch(options);
 
