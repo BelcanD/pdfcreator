@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3000; // Устанавливаем порт д
 
 app.use(cors()); // Включаем CORS
 app.use(bodyParser.json({ limit: '1mb' })); // Устанавливаем максимальный размер входных данных в 1MB
+app.use(express.static(path.join(__dirname, 'public'))); // Укажите путь к папке с вашими статическими файлами
 
 // Функция для генерации HTML из данных
 function generateHTML(cv_data, template_id) {
