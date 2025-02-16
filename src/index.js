@@ -145,6 +145,10 @@ app.get('/api/v1/templates', authenticateToken, (req, res) => {
     res.status(200).json({ templates }); // Возвращаем массив шаблонов
 });
 
+app.get('/', (req, res) => {
+    res.send('Welcome to the PDF Creator API!'); // Простой ответ на GET запрос к корню
+});
+
 // Запускаем сервер
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`); // Выводим сообщение о запуске сервера
