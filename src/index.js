@@ -71,13 +71,26 @@ app.post('/api/v1/generate', authenticateToken, async (req, res) => {
     try {
         const html = generateHTML(cv_data, template_id);
 
-        // Инициализация браузера с chrome-aws-lambda
-        const browser = await puppeteer.launch({
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
-            executablePath: await chromium.executablePath,
-            headless: true,
-        });
+        // Updated browser launch configuration
+        const options = process.env.AWS_LAMBDA_FUNCTION_VERSION
+            ? {
+                args: chromium.args,
+                defaultViewport: chromium.defaultViewport,
+                executablePath: await chromium.executablePath,
+                headless: chromium.headless,
+                ignoreHTTPSErrors: true,
+            }
+            : {
+                args: [],
+                executablePath: process.platform === 'win32'
+                    ? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+                    : process.platform === 'linux'
+                    ? '/usr/bin/google-chrome'
+                    : '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+                headless: true,
+            };
+
+        const browser = await puppeteer.launch(options);
 
         const page = await browser.newPage();
         
